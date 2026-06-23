@@ -1,0 +1,19 @@
+{
+  "skill_name": "creative-factory",
+  "evals": [
+    {
+      "id": 1,
+      "name": "quickbooks-multiplatform-gated-matrix",
+      "prompt": "I need to spin up a batch of on-brand ad variants for a QuickBooks Online prospecting push across Meta feed, LinkedIn, and TikTok — with separate angles for small-business owners vs accountants. It's fintech, so nothing can make a compliance-risky claim (no guaranteed outcomes, etc.). Set up the variant matrix, write the copy to each platform's spec, and gate it so I know which ones are actually safe to ship.",
+      "expected_output": "A format×pillar×audience variant matrix for QuickBooks across Meta/LinkedIn/TikTok with audience-differentiated copy written to each platform's char limits, every variant run through a compliance gate with a shippable/blocked verdict and a brand_qa_pass_rate.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "mailchimp-lift-handoff",
+      "prompt": "We're running an AI-creative-vs-agency test for a Mailchimp summer campaign. Produce the AI variant batch and give me the production-efficiency numbers I'd plug into an incrementality readout to prove lift over the agency baseline — how many shippable, cost per asset, brand-QA pass rate, time to launch.",
+      "expected_output": "An AI variant batch for Mailchimp plus a production-efficiency / lift-handoff block (assets, cost_per_asset, brand_qa_pass_rate, time_to_launch_days) shaped to feed an AI-vs-agency incrementality experiment.",
+      "files": []
+    }
+  ]
+}

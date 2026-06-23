@@ -49,6 +49,10 @@ python3 evals/factory_test.py
 The gate held back exactly the two that should never ship: a **banned-claim BLOCK** ("guaranteed maximum
 refund") and a **truncated headline** (38 chars in a 30-char RSA slot). The other 16 cleared automatically.
 
+> **Blind-tested** on brands it had never seen (QuickBooks, Mailchimp): with the skill, a fresh agent
+> scored **100%**; without it, **50%** — drifting off-brief and fabricating its agency comparison. See
+> [`evals/BENCHMARK.md`](evals/BENCHMARK.md).
+
 ## Real rendered creative
 
 The hybrid render path runs end to end — `--render-prompts` → `generate-image` (Gemini 3 Pro) for the
@@ -97,6 +101,7 @@ Studio / DCO variant matrix", "make 50 on-brand versions of this ad".
 ```
 creative-factory/
 ├── SKILL.md                     ← the skill (workflow + division of labor)
+├── demo-script.md               ← 2-minute Loom storyboard of the closed loop
 ├── scripts/
 │   ├── factory.py               ← plan (matrix) + build (validate + gate + manifest + lift handoff)
 │   ├── formats.py               ← platform format registry (dims / safe zones / char limits)
