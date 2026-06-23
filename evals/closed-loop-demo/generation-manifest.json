@@ -1,0 +1,466 @@
+{
+  "campaign": "TurboTax TY25 prospecting — AI (Gen Studio) creative pilot",
+  "brand": "TurboTax",
+  "matrix": {
+    "formats": 3,
+    "pillars": 3,
+    "audiences": 2,
+    "cells": 18
+  },
+  "summary": {
+    "variants_generated": 18,
+    "shippable": 16,
+    "blocked": 1,
+    "review_required": 0,
+    "char_fail": 1,
+    "brand_qa_pass_rate": 0.8889,
+    "gate": "brand-system check.py"
+  },
+  "production_efficiency": {
+    "assets": 16,
+    "variants_generated": 18,
+    "brand_qa_pass_rate": 0.8889,
+    "cost_per_asset": 120,
+    "hours": 60,
+    "time_to_launch_days": 3,
+    "_note": "assets + brand_qa_pass_rate are measured by this run; cost_per_asset / hours / time_to_launch_days must be filled with real measured values before claiming lift."
+  },
+  "lift_handoff": {
+    "_use": "Paste into a lift-scorecard results.json as arms.ai; fill impressions/clicks/conversions/spend/exposed_users/hook_rate after the flight, then run lift.py.",
+    "arms.ai": {
+      "impressions": null,
+      "clicks": null,
+      "spend": null,
+      "conversions": null,
+      "exposed_users": null,
+      "assets": 16,
+      "cost_per_asset": 120,
+      "time_to_launch_days": 3,
+      "hours": 60,
+      "brand_qa_pass_rate": 0.8889,
+      "hook_rate": null
+    }
+  },
+  "variants": [
+    {
+      "id": "meta_feed__confidence__first_time_filers",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "confidence",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "First time filing? TurboTax walks you through every step in plain language, so you can file knowing it's done right.",
+        "headline": "File with confidence",
+        "description": "Taxes done right",
+        "cta": "Start for free"
+      },
+      "image_prompt": "A first-time filer relaxed at a laptop in warm natural morning light, calm and reassured, soft TurboTax-blue accents, approachable and modern, real person not stock-cliche.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "meta_feed__confidence__self_employed",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "confidence",
+      "audience": "self-employed",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "Self-employed? Get your guaranteed maximum refund and every dollar you deserve.",
+        "headline": "Maximize your deductions",
+        "description": "Schedule C made simple",
+        "cta": "File with TurboTax"
+      },
+      "image_prompt": "A self-employed creative professional in a bright home studio reviewing finances confidently, warm light, TurboTax-blue accents.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "BLOCK",
+      "compliance_findings": [
+        {
+          "asset": "meta_feed__confidence__self_employed:primary_text",
+          "rule": "outcome_promise",
+          "severity": "blocker",
+          "reason": "Unsubstantiated outcome promise.",
+          "match": "guaranteed maximum refund"
+        },
+        {
+          "asset": "meta_feed__confidence__self_employed:primary_text",
+          "rule": "guarantee_word",
+          "severity": "review",
+          "reason": "Only approved guarantee names in exact wording (e.g. 'Maximum Refund Guarantee') — verify.",
+          "match": "guarantee"
+        },
+        {
+          "asset": "(asset set)",
+          "rule": "missing_disclaimer:max_refund",
+          "severity": "blocker",
+          "reason": "Refund-maximization claims require the guarantee-terms disclaimer. Triggered by 'maximum refund'. Add: \"See Maximum Refund Guarantee terms and conditions.\"",
+          "match": "maximum refund"
+        }
+      ],
+      "shippable": false
+    },
+    {
+      "id": "meta_feed__ease__first_time_filers",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "ease",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "Snap a photo of your W-2 and TurboTax fills in the rest. Filing your taxes takes minutes, not a weekend.",
+        "headline": "Taxes made simple",
+        "description": "Done in minutes",
+        "cta": "Start for free"
+      },
+      "image_prompt": "Close-up of a phone photographing a W-2, TurboTax app auto-filling fields, clean bright kitchen-table setting, warm and effortless.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "meta_feed__ease__self_employed",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "ease",
+      "audience": "self-employed",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "Import your 1099s and TurboTax finds the self-employed deductions that fit your work - no spreadsheets required.",
+        "headline": "Self-employed taxes, simplified",
+        "description": "Deductions made easy",
+        "cta": "File with TurboTax"
+      },
+      "image_prompt": "A freelancer at a tidy desk, 1099s importing into TurboTax on screen, relaxed posture, warm natural light, blue accents.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "meta_feed__free_for_simple_returns__first_time_filers",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "free for simple returns",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "Simple return? File federal and state for $0 with TurboTax Free Edition.",
+        "headline": "File simple returns free",
+        "description": "$0 fed & state",
+        "cta": "Start for free"
+      },
+      "image_prompt": "A young first-time filer smiling at a laptop, light and breezy, TurboTax-blue accents, sense of relief and simplicity.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "meta_feed__free_for_simple_returns__self_employed",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "free for simple returns",
+      "audience": "self-employed",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "Start your return for $0 with TurboTax Free Edition. If your self-employed forms need more, upgrade only when you do.",
+        "headline": "Start free, pay only if you upgrade",
+        "description": "No surprises",
+        "cta": "Get started"
+      },
+      "image_prompt": "A small-business owner starting taxes on a tablet in a cafe, calm and in control, warm light, blue accents.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "linkedin_single_image__confidence__first_time_filers",
+      "platform": "linkedin",
+      "placement": "single_image",
+      "pillar": "confidence",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1200,
+        627
+      ],
+      "copy": {
+        "intro_text": "Filing for the first time shouldn't feel like a test. TurboTax guides you line by line so you file with confidence.",
+        "headline": "File your first return with confidence",
+        "cta": "Get started"
+      },
+      "image_prompt": "Professional, clean 1.91:1 composition of a confident young professional at a desk, TurboTax-blue brand accent, B2B register.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "linkedin_single_image__confidence__self_employed",
+      "platform": "linkedin",
+      "placement": "single_image",
+      "pillar": "confidence",
+      "audience": "self-employed",
+      "asset_type": "image",
+      "dims": [
+        1200,
+        627
+      ],
+      "copy": {
+        "intro_text": "Running your own business is hard enough. TurboTax helps self-employed filers get it right and file with confidence.",
+        "headline": "Self-employed taxes, filed with confidence",
+        "cta": "File with TurboTax"
+      },
+      "image_prompt": "A self-employed professional in a workshop/office, composed and confident, clean 1.91:1 layout, blue accent.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "linkedin_single_image__ease__first_time_filers",
+      "platform": "linkedin",
+      "placement": "single_image",
+      "pillar": "ease",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1200,
+        627
+      ],
+      "copy": {
+        "intro_text": "Your first return, without the stress. Import your W-2, answer a few questions, and TurboTax handles the rest.",
+        "headline": "Your first tax return, made simple",
+        "cta": "Start for free"
+      },
+      "image_prompt": "Clean professional scene of an easy guided flow on a laptop, calm tones, TurboTax-blue accent.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "linkedin_single_image__ease__self_employed",
+      "platform": "linkedin",
+      "placement": "single_image",
+      "pillar": "ease",
+      "audience": "self-employed",
+      "asset_type": "image",
+      "dims": [
+        1200,
+        627
+      ],
+      "copy": {
+        "intro_text": "Spend less time on taxes and more on your business. TurboTax imports your 1099s and surfaces deductions that fit.",
+        "headline": "Self-employed taxes without the busywork",
+        "cta": "File with TurboTax"
+      },
+      "image_prompt": "A busy founder focused on their craft while taxes handle themselves on a nearby screen, 1.91:1, warm professional light.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "linkedin_single_image__free_for_simple_returns__first_time_filers",
+      "platform": "linkedin",
+      "placement": "single_image",
+      "pillar": "free for simple returns",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1200,
+        627
+      ],
+      "copy": {
+        "intro_text": "If your return is simple, you may be able to file federal and state for $0 with TurboTax Free Edition.",
+        "headline": "Simple returns can file free with TurboTax Free Edition",
+        "cta": "Start for free"
+      },
+      "image_prompt": "Bright, optimistic 1.91:1 scene of a first-time filer finishing quickly, TurboTax-blue accent.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "linkedin_single_image__free_for_simple_returns__self_employed",
+      "platform": "linkedin",
+      "placement": "single_image",
+      "pillar": "free for simple returns",
+      "audience": "self-employed",
+      "asset_type": "image",
+      "dims": [
+        1200,
+        627
+      ],
+      "copy": {
+        "intro_text": "Start your return for $0 with TurboTax Free Edition and upgrade only if your self-employed forms call for it.",
+        "headline": "Start free, upgrade only when your return needs it",
+        "cta": "Get started"
+      },
+      "image_prompt": "A confident freelancer starting their return on a laptop, professional 1.91:1 composition, blue accent.",
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "google_rsa__confidence__first_time_filers",
+      "platform": "google",
+      "placement": "rsa",
+      "pillar": "confidence",
+      "audience": "first-time filers",
+      "asset_type": "text",
+      "dims": null,
+      "copy": {
+        "headline": "File With Confidence",
+        "description": "First-time filers, guided step by step. File knowing your taxes are done right."
+      },
+      "image_prompt": null,
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "google_rsa__confidence__self_employed",
+      "platform": "google",
+      "placement": "rsa",
+      "pillar": "confidence",
+      "audience": "self-employed",
+      "asset_type": "text",
+      "dims": null,
+      "copy": {
+        "headline": "Self-Employed Tax Filing",
+        "description": "Built for 1099 and Schedule C filers. File accurately with TurboTax."
+      },
+      "image_prompt": null,
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "google_rsa__ease__first_time_filers",
+      "platform": "google",
+      "placement": "rsa",
+      "pillar": "ease",
+      "audience": "first-time filers",
+      "asset_type": "text",
+      "dims": null,
+      "copy": {
+        "headline": "Taxes Made Simple",
+        "description": "Import your W-2 and file in minutes with TurboTax. Simple returns, done fast."
+      },
+      "image_prompt": null,
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "google_rsa__ease__self_employed",
+      "platform": "google",
+      "placement": "rsa",
+      "pillar": "ease",
+      "audience": "self-employed",
+      "asset_type": "text",
+      "dims": null,
+      "copy": {
+        "headline": "Self-Employed Taxes Made Simple Online",
+        "description": "Import 1099s and find every deduction with TurboTax Self-Employed."
+      },
+      "image_prompt": null,
+      "char_check": "FAIL",
+      "char_issues": [
+        "headline: 38/30"
+      ],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": false
+    },
+    {
+      "id": "google_rsa__free_for_simple_returns__first_time_filers",
+      "platform": "google",
+      "placement": "rsa",
+      "pillar": "free for simple returns",
+      "audience": "first-time filers",
+      "asset_type": "text",
+      "dims": null,
+      "copy": {
+        "headline": "File Free: Simple Returns",
+        "description": "Simple returns file federal & state for $0 with TurboTax Free Edition."
+      },
+      "image_prompt": null,
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "google_rsa__free_for_simple_returns__self_employed",
+      "platform": "google",
+      "placement": "rsa",
+      "pillar": "free for simple returns",
+      "audience": "self-employed",
+      "asset_type": "text",
+      "dims": null,
+      "copy": {
+        "headline": "Start Your Taxes Free",
+        "description": "Start for $0 with TurboTax Free Edition; upgrade only if your return needs it."
+      },
+      "image_prompt": null,
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    }
+  ]
+}

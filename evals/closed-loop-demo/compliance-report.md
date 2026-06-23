@@ -1,0 +1,26 @@
+# Creative Factory — TurboTax TY25 prospecting — AI (Gen Studio) creative pilot (TurboTax)
+
+## ⛔ 16/18 shippable · brand QA pass rate 89%
+
+- Blocked: 1  ·  Review required: 0  ·  Char-limit fails: 1
+- Compliance gate: brand-system check.py
+
+### Held back (fix upstream, then regenerate)
+
+| Variant | Char | Compliance | Issue |
+|---|---|---|---|
+| meta_feed__confidence__self_employed | PASS | BLOCK | outcome_promise (`guaranteed maximum refund`); guarantee_word (`guarantee`); missing_disclaimer:max_refund (`maximum refund`) |
+| google_rsa__ease__self_employed | FAIL | PASS | headline: 38/30 |
+
+### Production efficiency (for the lift readout)
+
+| Metric | Value |
+|---|---|
+| assets | 16 |
+| variants_generated | 18 |
+| brand_qa_pass_rate | 0.8889 |
+| cost_per_asset | 120 |
+| hours | 60 |
+| time_to_launch_days | 3 |
+
+_Next: fill the perf fields in `lift_handoff` after the flight and run `lift-scorecard` for incremental GNS / iROAS vs the agency arm._

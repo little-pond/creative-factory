@@ -1,0 +1,138 @@
+{
+  "campaign": "TurboTax TY25 prospecting — AI (Gen Studio) creative pilot",
+  "brand": "TurboTax",
+  "matrix": {
+    "formats": 3,
+    "pillars": 3,
+    "audiences": 2,
+    "cells": 18
+  },
+  "summary": {
+    "variants_generated": 18,
+    "shippable": 16,
+    "blocked": 1,
+    "review_required": 0,
+    "char_fail": 1,
+    "brand_qa_pass_rate": 0.8889,
+    "gate": "brand-system check.py"
+  },
+  "production_efficiency": {
+    "assets": 16,
+    "variants_generated": 18,
+    "brand_qa_pass_rate": 0.8889,
+    "cost_per_asset": 120,
+    "hours": 60,
+    "time_to_launch_days": 3,
+    "_note": "assets + brand_qa_pass_rate are measured by this run; cost_per_asset / hours / time_to_launch_days must be filled with real measured values before claiming lift."
+  },
+  "lift_handoff": {
+    "_use": "Paste into a lift-scorecard results.json as arms.ai; fill impressions/clicks/conversions/spend/exposed_users/hook_rate after the flight, then run lift.py.",
+    "arms.ai": {
+      "impressions": null,
+      "clicks": null,
+      "spend": null,
+      "conversions": null,
+      "exposed_users": null,
+      "assets": 16,
+      "cost_per_asset": 120,
+      "time_to_launch_days": 3,
+      "hours": 60,
+      "brand_qa_pass_rate": 0.8889,
+      "hook_rate": null
+    }
+  },
+  "variants": [
+    {
+      "id": "meta_feed__confidence__first_time_filers",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "confidence",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "First time filing? TurboTax walks you through every step in plain language, so you can file knowing it's done right.",
+        "headline": "File with confidence",
+        "description": "Taxes done right",
+        "cta": "Start for free"
+      },
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    },
+    {
+      "id": "meta_feed__confidence__self_employed",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "confidence",
+      "audience": "self-employed",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "Self-employed? Get your guaranteed maximum refund and every dollar you deserve.",
+        "headline": "Maximize your deductions",
+        "description": "Schedule C made simple",
+        "cta": "File with TurboTax"
+      },
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "BLOCK",
+      "compliance_findings": [
+        {
+          "asset": "meta_feed__confidence__self_employed:primary_text",
+          "rule": "outcome_promise",
+          "severity": "blocker",
+          "reason": "Unsubstantiated outcome promise.",
+          "match": "guaranteed maximum refund"
+        },
+        {
+          "asset": "meta_feed__confidence__self_employed:primary_text",
+          "rule": "guarantee_word",
+          "severity": "review",
+          "reason": "Only approved guarantee names in exact wording (e.g. 'Maximum Refund Guarantee') — verify.",
+          "match": "guarantee"
+        },
+        {
+          "asset": "(asset set)",
+          "rule": "missing_disclaimer:max_refund",
+          "severity": "blocker",
+          "reason": "Refund-maximization claims require the guarantee-terms disclaimer. Triggered by 'maximum refund'. Add: \"See Maximum Refund Guarantee terms and conditions.\"",
+          "match": "maximum refund"
+        }
+      ],
+      "shippable": false
+    },
+    {
+      "id": "meta_feed__ease__first_time_filers",
+      "platform": "meta",
+      "placement": "feed",
+      "pillar": "ease",
+      "audience": "first-time filers",
+      "asset_type": "image",
+      "dims": [
+        1080,
+        1080
+      ],
+      "copy": {
+        "primary_text": "Snap a photo of your W-2 and TurboTax fills in the rest. Filing your taxes takes minutes, not a weekend.",
+        "headline": "Taxes made simple",
+        "description": "Done in minutes",
+        "cta": "Start for free"
+      },
+      "char_check": "PASS",
+      "char_issues": [],
+      "compliance": "PASS",
+      "compliance_findings": [],
+      "shippable": true
+    }
+  ],
+  "_comment": "Example build output (variants truncated to 3 for readability; a real manifest holds all rows). summary + production_efficiency + lift_handoff are the full real values from the 18-variant TurboTax demo."
+}

@@ -1,0 +1,21 @@
+{
+  "_comment": "Input to `factory.py plan`. Points at a brand-system brand-profile.json for voice + audiences + compliance, then names the formats and (optionally) the messaging axes. Anything you omit here falls back to the brand profile. Clone and edit.",
+  "campaign": "Brand FY26 prospecting — AI creative pilot",
+  "brand": "Brand",
+  "brand_profile": "../brand-system/assets/brand-profile.template.json",
+  "formats": ["meta:feed", "meta:stories", "google:rsa", "linkedin:single_image", "tiktok:infeed"],
+  "audiences": ["segment-a", "segment-b"],
+  "messaging": {
+    "pillars": ["pillar-1", "pillar-2"],
+    "geo_angles": [
+      {"angle": "answer-first claim lifted from a geo-content-brief", "source": "geo-content-brief: <query>"}
+    ],
+    "approved_ctas": ["Get started"]
+  },
+  "production": {
+    "_note": "Measure these on the real flight; defaults are placeholders. cost_per_asset = token/compute $ per shippable variant; hours = wall-clock effort; time_to_launch_days = brief -> live.",
+    "cost_per_asset": null,
+    "hours": null,
+    "time_to_launch_days": null
+  }
+}
