@@ -156,6 +156,7 @@ def cmd_plan(args):
         "skipped_formats": skipped,
         "voice": brand.get("voice", {}),
         "approved_ctas": ctas,
+        "production": campaign.get("production", {}),  # carry cost/hours/days through to build's lift handoff
         "variants": rows,
     }
     out = args.out or "variant-plan.json"
