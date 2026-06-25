@@ -117,11 +117,12 @@ build to emit `render-queue.json`, then render the visual layer and lay the gate
 their own creds). It calls the `generate-image` skill, which reads `OPENROUTER_API_KEY` from `~/.env`:
 
 ```bash
-python3 scripts/render.py out/render-queue.json --out heroes/ \
-    --model google/gemini-3-pro-image-preview     # default: best quality (rendered the demo heroes)
-# alternatives: google/gemini-2.5-flash-image (cheapest, bulk drafts) · google/gemini-3.1-flash-image
-#               openai/gpt-5-image | gpt-5-image-mini | gpt-5.4-image-2 (OpenAI option)
-python3 scripts/render.py out/render-queue.json --dry-run   # plan only, spends nothing
+# SAFE BY DEFAULT: no --go renders nothing — it prints the plan + estimated cost and stops.
+python3 scripts/render.py out/render-queue.json                       # estimate only, spends $0
+python3 scripts/render.py out/render-queue.json --go --max-cost 0.50  # actually render (with a cap)
+#   --model: google/gemini-3-pro-image-preview (default, best) · google/gemini-2.5-flash-image (cheapest)
+#            google/gemini-3.1-flash-image · openai/gpt-5-image | gpt-5-image-mini | gpt-5.4-image-2
+#   ~cost/img: flash ~$0.003 · gemini-3-pro ~$0.015 · gpt-5-image ~$0.02  (approx; scales w/ resolution)
 ```
 
 **Compose** the finished ad (copy on the rendered hero, exact platform dims) with `scripts/compose.py`:
