@@ -55,8 +55,10 @@ refund") and a **truncated headline** (38 chars in a 30-char RSA slot). The othe
 
 ## Real rendered creative
 
-The hybrid render path runs end to end — `--render-prompts` → `generate-image` (Gemini 3 Pro) for the
-visual layer → `scripts/compose.py` to lay the gate-passed copy on top at exact platform dims:
+The hybrid render path runs end to end — `--render-prompts` → **`scripts/render.py`** (OpenRouter image
+models, the local Adobe-Gen-Studio-equivalent: **Gemini 3 Pro Image** by default, or Gemini Flash /
+OpenAI `gpt-5-image`) for the visual layer → `scripts/compose.py` to lay the gate-passed copy on top at
+exact platform dims:
 
 | | |
 |---|---|

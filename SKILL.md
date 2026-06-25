@@ -109,19 +109,32 @@ A recurring block means the brief is wrong. Log it, fix the generation instructi
 
 ### Step 4 — (Optional, hybrid) Render the hero variants
 
-The matrix + manifest are pure-compute and testable. To produce real assets for a portfolio or a pitch,
-add `--render-prompts` to the build to emit `render-queue.json`, then feed those prompts to an image tool
-(the `generate-image` skill, or Gen Studio / Celtra) to render the visual layer, and lay the gate-passed
-copy on top with `scripts/compose.py` to get a finished-ad mockup at exact platform dims:
+The matrix + manifest are pure-compute and testable. To produce real assets, add `--render-prompts` to the
+build to emit `render-queue.json`, then render the visual layer and lay the gate-passed copy on top.
+
+**Render — the production stack.** `scripts/render.py` drives the render via **OpenRouter image models**
+(the locally-available equivalent of Adobe Gen Studio / Celtra — those would be a drop-in here but need
+their own creds). It calls the `generate-image` skill, which reads `OPENROUTER_API_KEY` from `~/.env`:
 
 ```bash
-python3 scripts/compose.py --image hero.png --dims 1080x1080 --zone top \
+python3 scripts/render.py out/render-queue.json --out heroes/ \
+    --model google/gemini-3-pro-image-preview     # default: best quality (rendered the demo heroes)
+# alternatives: google/gemini-2.5-flash-image (cheapest, bulk drafts) · google/gemini-3.1-flash-image
+#               openai/gpt-5-image | gpt-5-image-mini | gpt-5.4-image-2 (OpenAI option)
+python3 scripts/render.py out/render-queue.json --dry-run   # plan only, spends nothing
+```
+
+**Compose** the finished ad (copy on the rendered hero, exact platform dims) with `scripts/compose.py`:
+
+```bash
+python3 scripts/compose.py --image heroes/hero.png --dims 1080x1080 --zone top \
     --headline "File with confidence" --body "First time filing? We guide every step." \
     --cta "Start for free" --out out/ad.png
 ```
 
-Render the *shippable* ones only — the gate already filtered the rest. `assets/heroes/` holds a worked set
-(3 rendered heroes → 3 composed ads). `compose.py` needs Pillow; it's the one optional non-stdlib piece.
+Render only the *shippable* rows — the gate filtered the rest. `assets/heroes/` holds a worked set
+(3 heroes → 3 composed ads). `render.py` uses your OpenRouter key (costs per image); `compose.py` needs
+Pillow. Both are the optional, non-stdlib render half.
 
 ### Step 5 — Close the loop
 
@@ -155,6 +168,7 @@ is "embed AI into the campaign loop end to end" made concrete.
 
 - `scripts/factory.py` — `plan` (matrix → work order) and `build` (validate + gate + manifest + handoff).
 - `scripts/formats.py` — the platform format registry (dims, safe zones, char limits) + validators.
+- `scripts/render.py` — (optional) render shippable hero prompts via OpenRouter image models (Gemini 3 Pro Image default; Gemini Flash / OpenAI gpt-5-image selectable). The Adobe-Gen-Studio-equivalent in this env.
 - `scripts/compose.py` — (optional, needs Pillow) lay gate-passed copy onto a rendered hero → finished ad.
 - `references/format-specs.md` — the registry in human-readable form, with per-platform notes.
 - `references/variant-strategy.md` — choosing the matrix axes, hooks, DCO, audience personalization,

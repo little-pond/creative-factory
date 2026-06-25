@@ -1,8 +1,9 @@
 # Hero Gallery — real rendered creative
 
 These are **real assets the factory produced**, not stock — the hybrid render path end to end:
-`factory.py build --render-prompts` emitted the image prompts → `generate-image` (Gemini 3 Pro) rendered
-the visual layer → `compose.py` laid the **gate-passed copy** onto each at exact platform spec.
+`factory.py build --render-prompts` emitted the prompts → `scripts/render.py` rendered the visual layer
+via **OpenRouter → Google Gemini 3 Pro Image** (the local Adobe-Gen-Studio-equivalent; key from `~/.env`)
+→ `compose.py` laid the **gate-passed copy** onto each at exact platform spec.
 
 Every ad here corresponds to a variant that **cleared the 18-cell TurboTax run's compliance gate**
 (the 2 that didn't — the banned-claim BLOCK and the truncated headline — were never rendered).
