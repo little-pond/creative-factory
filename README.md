@@ -110,8 +110,9 @@ creative-factory/
 ├── scripts/
 │   ├── factory.py               ← plan (matrix) + build (validate + gate + dedup + manifest + lift handoff) + ingest
 │   ├── formats.py               ← platform format registry (dims / safe zones / char limits) + safe-zone check
-│   ├── render.py                ← (opt) render shippable hero prompts via OpenRouter image models (anti-slop injected)
-│   └── compose.py               ← (opt, Pillow) copy-on-hero composer (safe-zone + contrast enforced)
+│   ├── formulas.py              ← 8 layout formulas from《排版的力量·54个排版公式》(drive wireframe + compose)
+│   ├── render.py                ← (opt) render hero prompts via OpenRouter (anti-slop + formula + layout-ref)
+│   └── compose.py               ← (opt, Pillow) copy-on-hero composer (formula layout + safe-zone + contrast)
 ├── references/                  ← format-specs, variant-strategy, anti-slop-image, closed-loop-demo
 ├── assets/                      ← campaign template + worked (fictional) Northwind Tax example
 ├── evals/                       ← factory_test.py + reproduced closed-loop-demo outputs

@@ -26,6 +26,9 @@ import os
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import formulas as flib  # noqa: E402
+
 GENIMG = os.path.expanduser("~/.claude/skills/generate-image/scripts/generate_image.py")
 DEFAULT_MODEL = "google/gemini-3-pro-image-preview"
 
@@ -85,15 +88,24 @@ LAYOUT_INSTRUCTION = (
 )
 
 
-def build_wireframe(dims, safe, copy_zone, path):
+def build_wireframe(dims, safe, copy_zone, path, formula=None):
     """Draw a layout wireframe (needs Pillow): a COPY zone, a FOCAL-SUBJECT zone, and the platform-UI
-    safe bands from formats.py. Fed to the image model via --input so it reserves the copy space."""
+    safe bands from formats.py. Fed to the image model via --input so it reserves the copy space. When a
+    layout formula is given, the copy band follows the formula's negative-space ratio and a golden
+    formula snaps the band edge to the 0.618 line — so the reservation matches the formula compose uses."""
     from PIL import Image, ImageDraw, ImageFont
     w, h = (dims or [1024, 1024])
     im = Image.new("RGB", (w, h), (232, 232, 230))
     d = ImageDraw.Draw(im, "RGBA")
     safe = safe or {}
     frac = 0.42
+    tag = "COPY — simple negative space"
+    if formula:
+        fid, F = formula
+        frac = min(0.5, max(0.30, 1 - F["negative_space"]))
+        if F.get("golden"):
+            frac = 0.382  # copy on the short golden segment
+        tag = f"COPY ({fid} {F['zh']}) — simple negative space"
     if copy_zone == "top":
         cz = (0, 0, w, int(h * frac))
     elif copy_zone == "bottom":
@@ -124,10 +136,21 @@ def build_wireframe(dims, safe, copy_zone, path):
         f = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", max(14, w // 34))
     except Exception:
         f = ImageFont.load_default()
-    d.text((cz[0] + w * 0.02, cz[1] + h * 0.02), "COPY — simple negative space", fill=(20, 50, 110), font=f)
+    d.text((cz[0] + w * 0.02, cz[1] + h * 0.02), tag, fill=(20, 50, 110), font=f)
     d.text((fz[0] + w * 0.02, fz[1] + h * 0.02), "FOCAL SUBJECT", fill=(20, 90, 50), font=f)
     im.save(path)
     return path
+
+
+def formula_recipe(formula):
+    """The book's compose recipe for a formula + the universal 00-workflow prompt cues, appended so the
+    hero is generated to the same formula compose lays copy out to."""
+    if not formula:
+        return ""
+    fid, F = formula
+    return (f" LAYOUT FORMULA {fid} {F['zh']} ({F['en']}) — compose the shot so: {F['recipe']}. "
+            "Off-center focal (rule of thirds or golden), muted 2–3 colour palette, fine 35mm film grain, "
+            "editorial mood.")
 
 
 def main():
@@ -144,6 +167,10 @@ def main():
                     help="pass a placement layout wireframe to the model as a visual reference (needs Pillow)")
     ap.add_argument("--copy-zone", default="bottom", choices=["top", "bottom", "left", "right"],
                     help="which zone the wireframe reserves for copy (default bottom)")
+    ap.add_argument("--formula", help="layout formula id/intent from 《排版的力量·54个排版公式》 "
+                    "(e.g. 43 / premium / minimal) — appends its compose recipe + shapes the wireframe")
+    ap.add_argument("--formula-example", action="store_true",
+                    help="use the book's 例图 for the formula as the model reference (instead of the wireframe)")
     a = ap.parse_args()
 
     if a.layout_ref:
@@ -160,13 +187,17 @@ def main():
     est = per * n
 
     anti = "" if a.no_anti_slop else (ANTI_SLOP + brand_constraints(a.brand))
+    formula = flib.resolve(a.formula, a.copy_zone) if a.formula else None
+    recipe = formula_recipe(formula)
 
     print(f"model:      {a.model}")
     print(f"to render:  {n} hero(es)  ·  ~${per:.3f}/image")
     print(f"EST. COST:  ~${est:.2f}  (approximate — scales with resolution/tokens)")
     print(f"anti-slop:  {'OFF' if a.no_anti_slop else 'ON'}"
           f"{' + brand palette/donts' if (anti and a.brand) else ''}")
-    print(f"layout-ref: {('ON (copy zone: ' + a.copy_zone + ')') if a.layout_ref else 'OFF'}")
+    print(f"layout-ref: {('ON (copy zone: ' + a.copy_zone + ')') if a.layout_ref else 'OFF'}"
+          f"{' + book 例图' if a.formula_example else ''}")
+    print(f"formula:    {(formula[0] + ' ' + formula[1]['zh'] + '·' + formula[1]['en']) if formula else 'none'}")
 
     if a.max_cost is not None and est > a.max_cost:
         sys.exit(f"ABORT: estimate ${est:.2f} exceeds --max-cost ${a.max_cost:.2f}")
@@ -182,13 +213,17 @@ def main():
     done = 0
     for v in items:
         out = os.path.join(a.out, v["id"] + ".png")
-        prompt = v["image_prompt"] + anti
+        prompt = v["image_prompt"] + anti + recipe
         cmd = [sys.executable, GENIMG, "--model", a.model, "--output", out]
-        if a.layout_ref:
-            wf = os.path.join(a.out, v["id"] + ".layout.png")
-            build_wireframe(v.get("dims"), v.get("safe"), a.copy_zone, wf)
+        ref = None
+        if a.formula_example and formula:
+            ref = flib.example_image_path(formula[0])  # the book's 例图 as composition reference
+        if ref is None and a.layout_ref:
+            ref = os.path.join(a.out, v["id"] + ".layout.png")
+            build_wireframe(v.get("dims"), v.get("safe"), a.copy_zone, ref, formula=formula)
+        if ref:
             prompt += LAYOUT_INSTRUCTION
-            cmd += ["--input", wf]
+            cmd += ["--input", ref]
         cmd.append(prompt)
         r = subprocess.run(cmd)
         done += (r.returncode == 0)

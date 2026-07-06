@@ -3,25 +3,21 @@
 compose.py — the finishing step of the hybrid render path: take a rendered hero (the pure visual layer)
 plus a variant's approved copy, and lay them up into a finished-ad mockup at the exact platform size.
 
-This is deliberately the *last* mile and a separate step from generation, because that's how real DCO /
-Gen Studio pipelines work: the model renders the image layer, and copy is composited on top per
-placement (so one hero serves many headlines/audiences). Here it produces a believable preview of the
-final unit — resized to spec, a legibility scrim over the copy zone, headline + body + a brand CTA pill.
+Copy is laid out to a LAYOUT FORMULA from 《排版的力量·54个排版公式》 (see scripts/formulas.py): the
+formula sets margins, alignment, line-spacing, negative-space ratio and headline opacity, and a small
+metadata line is added (the book's "小字当肌理" scale-jump craft rule). Pick one with --formula
+(id like 43, or an intent like premium/minimal/centered); default is the zone's natural formula.
 
-Two things it ENFORCES (not just draws):
-  P0 safe zone  — pass --placement meta:stories and the layout is INSET to the placement's safe_zone_px
-                  (copy/CTA/wordmark kept out of the bands platform UI covers), then re-checked; any
-                  residual violation fails the compose (unless --warn-safe). Turns formats.py's declared
-                  safe zone into a real gate.
-  P2 contrast   — samples the hero pixels UNDER the copy, computes the WCAG contrast ratio against the
-                  text color, and lays a soft text plate that ramps opacity until it clears --contrast-min
-                  (or reports the best it reached). No more white copy lost on a bright hero.
+It also ENFORCES two gates:
+  P0 safe zone — pass --placement meta:stories and the layout is INSET to safe_zone_px, then re-checked;
+                 a residual violation fails the compose (exit 2) unless --warn-safe.
+  P2 contrast — samples the hero under the copy and ramps a text plate until it clears --contrast-min.
 
-Fonts: uses Helvetica Neue / Arial as a stand-in for the brand display font (Inter) — swap in the
-real brand font for production. Requires Pillow. Example:
+Fonts: Helvetica Neue / Arial as a stand-in for the brand display font (Inter) — swap for production.
+Requires Pillow. Example:
 
     python3 scripts/compose.py --image assets/heroes/hero.png --dims 1080x1920 --zone bottom \\
-        --placement meta:stories --headline "File with confidence" \\
+        --placement meta:stories --formula 43 --headline "File with confidence" \\
         --body "First time filing? We guide every step." --cta "Start for free" \\
         --brand "#1E5EB8" --wordmark "Northwind" --out out/ad.png
 """
@@ -33,6 +29,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import formats as fmt  # noqa: E402
+import formulas as flib  # noqa: E402
 
 FONT_CANDIDATES = {
     "bold": ["/System/Library/Fonts/HelveticaNeue.ttc",
@@ -60,7 +57,6 @@ def hexrgb(h):
 
 
 def cover(img, w, h):
-    """Resize+center-crop the image to exactly fill w×h (like CSS object-fit: cover)."""
     src_w, src_h = img.size
     scale = max(w / src_w, h / src_h)
     nw, nh = int(src_w * scale + 0.5), int(src_h * scale + 0.5)
@@ -84,6 +80,14 @@ def wrap(draw, text, font, max_w):
     return lines
 
 
+def align_x(tx, max_tw, line_w, align):
+    if align == "center":
+        return tx + (max_tw - line_w) / 2
+    if align == "right":
+        return tx + (max_tw - line_w)
+    return tx
+
+
 # ---- P2: WCAG contrast helpers ----
 def _lin(c):
     c = c / 255.0
@@ -102,7 +106,6 @@ def contrast_ratio(a, b):
 
 
 def region_mean(rgb_img, box):
-    """Average RGB inside box — resize-to-1×1 is Pillow's fast area average."""
     x0, y0, x1, y1 = (int(v) for v in box)
     x0, y0 = max(0, x0), max(0, y0)
     x1, y1 = min(rgb_img.width, max(x1, x0 + 1)), min(rgb_img.height, max(y1, y0 + 1))
@@ -114,14 +117,22 @@ def compose(args):
     brand = hexrgb(args.brand)
     img = cover(Image.open(args.image).convert("RGB"), w, h)
     scratch = ImageDraw.Draw(Image.new("RGB", (1, 1)))
-    pad = int(w * 0.05)
+
+    # ---- pick the layout formula (from 《排版的力量·54个排版公式》) ----
+    fid, F = flib.resolve(args.formula, args.zone)
+    align = F["align"]
+    pad = int(w * F["margin_pct"])
+    line_mult = F["line_spacing"]
+    copy_frac = min(0.5, max(0.30, 1 - F["negative_space"]))  # how much of the canvas copy may occupy
+    head_op = int(255 * F.get("headline_opacity", 1.0))
 
     head_f = load_font("bold", int(w * 0.062))
     body_f = load_font("regular", int(w * 0.032))
     cta_f = load_font("bold", int(w * 0.034))
     mark_f = load_font("bold", int(w * 0.030))
+    meta_f = load_font("bold", max(11, int(w * 0.012)))  # scale-jump: hero ≫ metadata (book §1)
 
-    # ---- P0: derive safe insets from the placement, and lay copy out INSIDE them ----
+    # ---- P0: safe insets ----
     safe = {}
     if args.placement:
         plat, _, plc = args.placement.partition(":")
@@ -143,7 +154,8 @@ def compose(args):
         tx = max(pad, left_lim + pad)
         max_tw, text_color = (right_lim - pad) - tx, (255, 255, 255)
 
-    head_adv, body_adv = int(head_f.size * 1.18), int(body_f.size * 1.3)
+    head_adv = int(head_f.size * 1.18)
+    body_adv = int(body_f.size * line_mult)
     gap_body, gap_cta = int(w * 0.012), int(w * 0.025)
     pill_h = int(cta_f.size * 2.0)
 
@@ -152,22 +164,21 @@ def compose(args):
     copy_h = len(head_lines) * head_adv + (gap_body + len(body_lines) * body_adv if body_lines else 0)
     block_h = copy_h + (gap_cta + pill_h if args.cta else 0)
 
-    # anchor the block so it lives inside [top_lim, bot_lim]
     if is_panel:
         head_y = min(max(int(h * 0.18), top_lim + pad), bot_lim - pad - block_h)
     elif args.zone == "top":
         head_y = top_lim + pad
-    else:  # bottom — sit the block just above the bottom safe band
+    else:  # bottom
         head_y = max(top_lim + pad, (bot_lim - pad) - block_h)
 
     positions, y = [], head_y
     for ln in head_lines:
-        positions.append((head_f, ln, tx, y))
+        positions.append((head_f, ln, y, head_op))
         y += head_adv
     if body_lines:
         y += gap_body
         for ln in body_lines:
-            positions.append((body_f, ln, tx, y))
+            positions.append((body_f, ln, y, 255))
             y += body_adv
     copy_box = (tx, head_y, tx + max_tw, y)
 
@@ -176,21 +187,26 @@ def compose(args):
         y += gap_cta
         ctw = scratch.textlength(args.cta, font=cta_f)
         pill_w = int(ctw + w * 0.06)
-        cta_box = (tx, y, tx + pill_w, y + pill_h)
+        cx = align_x(tx, max_tw, pill_w, align)
+        cta_box = (cx, y, cx + pill_w, y + pill_h)
 
     mw = scratch.textlength(args.wordmark, font=mark_f)
     mx = min(right_lim - pad - mw, w - pad - mw) if args.zone in ("left", "top") else max(left_lim + pad, pad)
     my = (top_lim + pad) if args.zone == "bottom" else (bot_lim - pad - mark_f.size)
     mark_box = (mx, my, mx + mw, my + mark_f.size)
 
-    # ---- P2: base scrim (aesthetic) + a text plate that ramps until contrast clears the floor ----
+    # metadata micro-line (book §4 "小字当肌理"): a real, small tag opposite the wordmark
+    meta_txt = args.meta or f"CF · {fid} {F['zh']}·{F['en']}"
+
+    # ---- P2: base scrim + a text plate that ramps until contrast clears the floor ----
+    band_h = int(h * (copy_frac + 0.02))
+
     def base_scrim():
         ov = Image.new("RGBA", (w, h), (0, 0, 0, 0))
         dd = ImageDraw.Draw(ov)
         if is_panel:
             dd.rectangle([tx - pad, 0, tx + max_tw + pad, h], fill=(255, 255, 255, 205))
         else:
-            band_h = int(h * 0.42)
             for i in range(band_h):
                 a = int(150 * (1 - i / band_h)) if args.zone == "top" else int(150 * (i / band_h))
                 yy = i if args.zone == "top" else h - band_h + i
@@ -213,10 +229,11 @@ def compose(args):
         if ratio >= args.contrast_min:
             break
 
-    # ---- draw copy onto the chosen overlay ----
+    # ---- draw copy onto the chosen overlay, aligned per the formula ----
     d = ImageDraw.Draw(overlay)
-    for f, ln, lx, ly in positions:
-        d.text((lx, ly), ln, font=f, fill=text_color)
+    for f, ln, ly, op in positions:
+        lw = scratch.textlength(ln, font=f)
+        d.text((align_x(tx, max_tw, lw, align), ly), ln, font=f, fill=text_color + (op,))
     if cta_box:
         x0c, y0c, x1c, y1c = cta_box
         d.rounded_rectangle([x0c, y0c, x1c, y1c], radius=(y1c - y0c) // 2, fill=brand + (255,))
@@ -225,17 +242,23 @@ def compose(args):
                args.cta, font=cta_f, fill=(255, 255, 255))
     d.text((mark_box[0], mark_box[1]), args.wordmark, font=mark_f,
            fill=brand if is_panel else (255, 255, 255))
+    # metadata line in the corner opposite the wordmark
+    meta_w = scratch.textlength(meta_txt, font=meta_f)
+    meta_x = max(left_lim + pad, pad) if args.zone in ("left", "top") else min(right_lim - pad - meta_w, w - pad - meta_w)
+    meta_y = (top_lim + pad) if args.zone == "bottom" else (bot_lim - pad - meta_f.size)
+    d.text((meta_x, meta_y), meta_txt, font=meta_f, fill=(text_color + (150,)) if not is_panel else brand + (170,))
 
     out = Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
     out.save(args.out)
 
-    # ---- P0: re-check the final boxes against the safe zone ----
+    # ---- P0: re-check final boxes against the safe zone ----
     boxes = [("copy", *copy_box)] + ([("cta", *cta_box)] if cta_box else []) + [("wordmark", *mark_box)]
     violations = fmt.safe_zone_violations(spec, boxes, w, h) if safe else []
 
     cflag = "OK" if ratio >= args.contrast_min else f"LOW (best {ratio:.1f})"
-    print(f"composed {args.dims} ad -> {args.out}  ·  contrast {ratio:.1f}:1 (min {args.contrast_min}) {cflag}")
+    print(f"composed {args.dims} ad -> {args.out}  ·  formula {fid} {F['zh']}·{F['en']} "
+          f"(align {align}, 留白 {F['negative_space']:.0%})  ·  contrast {ratio:.1f}:1 {cflag}")
     if violations:
         for name, edge, over in violations:
             print(f"  SAFE-ZONE VIOLATION: '{name}' intrudes {over}px into the {edge} band "
@@ -249,8 +272,11 @@ def main():
     ap.add_argument("--image", required=True)
     ap.add_argument("--dims", required=True, help="WxH, e.g. 1080x1080")
     ap.add_argument("--zone", default="top", choices=["top", "bottom", "left", "right"])
-    ap.add_argument("--placement", help="platform:placement (e.g. meta:stories) → inset to + enforce its safe zone")
-    ap.add_argument("--warn-safe", action="store_true", help="report safe-zone violations but don't fail (exit 0)")
+    ap.add_argument("--formula", help="layout formula id (e.g. 43) or intent (premium/minimal/centered/"
+                    "asymmetric/fullbleed/module); default = the zone's natural formula")
+    ap.add_argument("--meta", help="small metadata line (book §4 texture); default = the formula tag")
+    ap.add_argument("--placement", help="platform:placement (e.g. meta:stories) → inset to + enforce safe zone")
+    ap.add_argument("--warn-safe", action="store_true", help="report safe-zone violations but don't fail")
     ap.add_argument("--contrast-min", type=float, default=4.5, help="WCAG contrast floor for copy on hero")
     ap.add_argument("--headline", required=True)
     ap.add_argument("--body", default="")

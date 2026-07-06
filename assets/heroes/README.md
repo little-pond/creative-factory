@@ -28,9 +28,11 @@ Studio reuse a single visual across a variant matrix.
   prompt, so the hero reads on-brand instead of generic stock. Add `--layout-ref --copy-zone bottom` and
   it also passes a **layout wireframe** (copy zone + focal-subject zone + safe bands, drawn from
   `formats.py`) to the model as an `--input`, so the hero reserves clean negative space for the copy.
-- **`compose.py`** keeps the copy **out of the placement's safe zone** (`formats.py` `safe_zone_px`) and
+- **`compose.py`** lays the copy out to a **layout formula** (`--formula`, from 《排版的力量·54个排版公式》
+  via `formulas.py`), keeps it **out of the placement's safe zone** (`formats.py` `safe_zone_px`), and
   checks a **legibility-contrast floor** against the hero pixels under the copy, auto-strengthening the
-  scrim when it fails.
+  scrim when it fails. Use the **same `--formula` on render and compose** so the hero and the typesetting
+  agree.
 
 ## Notes
 

@@ -25,6 +25,7 @@ FINEPRINT = "~37% of taxpayers qualify for Northwind Free Edition (simple Form 1
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import formats as fmt  # noqa: E402
 import render  # noqa: E402
+import formulas as flib  # noqa: E402
 
 
 def run(*args):
@@ -116,9 +117,19 @@ def main():
     cj = json.load(open(scaffold))
     assert cj["formats"] and "brand_profile" in cj and cj["messaging"]["pillars"], cj
 
+    # 10) layout formulas (《排版的力量·54个排版公式》): resolution by id/intent/zone + recipe wiring
+    assert flib.resolve("54")[0] == "54", "explicit id"
+    assert flib.resolve("premium")[0] == "54", "intent → formula"
+    assert flib.resolve(None, "left")[0] == "44", "zone default"
+    assert flib.resolve("nonsense", "top")[0] == "43", "fallback to zone default"
+    F = flib.FORMULAS["43"]
+    assert 0.0 < F["negative_space"] < 1.0 and F["align"] in ("left", "center", "right"), F
+    rec = render.formula_recipe(flib.resolve("54"))
+    assert "黄金比例" in rec and "Golden Ratio" in rec, rec  # book name flows into the render prompt
+
     print("PASS — creative-factory: 18-cell matrix (GEO folded in) | 16/18 shippable | "
           "banned-claim BLOCK + truncation FAIL caught | lift handoff assets=16, brand_qa=89% | "
-          "P0 safe-zone + P1 anti-slop + P3 dedup + P4 provenance + P5 ingest all green")
+          "P0 safe-zone + P1 anti-slop + P3 dedup + P4 provenance + P5 ingest + layout-formulas all green")
 
 
 if __name__ == "__main__":

@@ -138,6 +138,7 @@ the composited copy no longer collides with the subject.
 python3 scripts/render.py out/render-queue.json --brand ../brand-system/assets/northwind.brand.json          # estimate, $0
 python3 scripts/render.py out/render-queue.json --brand ../brand-system/assets/northwind.brand.json --go --max-cost 0.50
 python3 scripts/render.py out/render-queue.json --brand ... --layout-ref --copy-zone bottom --go   # reserve copy space
+python3 scripts/render.py out/render-queue.json --brand ... --formula premium --layout-ref --go     # compose to a book formula
 #   --model: google/gemini-3-pro-image-preview (default, best) · google/gemini-2.5-flash-image (cheapest)
 #            google/gemini-3.1-flash-image · openai/gpt-5-image | gpt-5-image-mini | gpt-5.4-image-2
 #   ~cost/img: flash ~$0.003 · gemini-3-pro ~$0.015 · gpt-5-image ~$0.02  (approx; scales w/ resolution)
@@ -145,18 +146,25 @@ python3 scripts/render.py out/render-queue.json --brand ... --layout-ref --copy-
 
 **Compose** the finished ad (copy on the rendered hero, exact platform dims) with `scripts/compose.py`.
 Pass `--placement platform:placement` so it lays the copy out **inside the safe zone** and fails if it
-can't, and it enforces a **legibility-contrast floor** against the hero pixels under the copy:
+can't, and it enforces a **legibility-contrast floor** against the hero pixels under the copy. Copy is
+laid out to a **layout formula** from 《排版的力量·54个排版公式》 (`scripts/formulas.py`): `--formula`
+takes an id (`43`) or an intent (`premium`→golden, `minimal`→white-space, `centered`, `asymmetric`), and
+the formula sets margins, alignment, line-spacing, negative-space ratio and adds a metadata micro-line
+(the book's 小字-as-texture craft rule). Default is the zone's natural formula. **Use the same `--formula`
+on `render.py` and `compose.py`** so the hero is generated to the same layout the copy is typeset to.
 
 ```bash
 python3 scripts/compose.py --image heroes/hero.png --dims 1080x1920 --zone bottom --placement meta:stories \
-    --headline "File with confidence" --body "First time filing? We guide every step." \
+    --formula premium --headline "File with confidence" --body "First time filing? We guide every step." \
     --cta "Start for free" --brand "#1E5EB8" --wordmark "Northwind" --out out/ad.png
 #   exits non-zero on a safe-zone violation (use --warn-safe to downgrade); --contrast-min sets the floor.
 ```
 
 Render only the *shippable* rows — the gate filtered the rest. Nothing is committed under `assets/heroes/`;
 run the two commands above to populate it (see its README). `render.py` uses your OpenRouter key (costs
-per image); `compose.py` needs Pillow. Both are the optional, non-stdlib render half.
+per image); `compose.py` needs Pillow. Both are the optional, non-stdlib render half. The formula *params*
+are vendored in `formulas.py`; the 261 例图 live in the `typography-formulas` skill and are used as the
+model reference when you add `render.py --formula-example`.
 
 ### Step 5 — Close the loop
 
@@ -192,6 +200,8 @@ is "embed AI into the campaign loop end to end" made concrete.
   reproducibility hashes + manifest + handoff), and `ingest` (scaffold a `campaign.json` from a brand URL).
 - `scripts/formats.py` — the platform format registry (dims, safe zones, char limits) + validators +
   the safe-zone geometry check.
+- `scripts/formulas.py` — 8 structural layout formulas (margins / alignment / negative-space / focal)
+  vendored from 《排版的力量·54个排版公式》, driving both the render wireframe and the compose typesetting.
 - `scripts/render.py` — (optional) render shippable hero prompts via OpenRouter image models (Gemini 3 Pro Image default; Gemini Flash / OpenAI gpt-5-image selectable). Injects an anti-slop constraint block. The Adobe-Gen-Studio-equivalent in this env.
 - `scripts/compose.py` — (optional, needs Pillow) lay gate-passed copy onto a rendered hero → finished ad,
   enforcing the placement's safe zone and a legibility-contrast floor.
