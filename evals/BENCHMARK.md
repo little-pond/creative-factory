@@ -2,14 +2,14 @@
 
 A blind A/B: the same two realistic tasks run by a fresh agent **with** `creative-factory` vs an
 identical agent **without** it (general tooling only). Both on *new* brands the skill has never seen
-(QuickBooks, Mailchimp) — so this measures generalization + whether the skill actually helps, not recall
+(FreshBooks, Klaviyo) — so this measures generalization + whether the skill actually helps, not recall
 of the worked example.
 
 | Metric | With skill | Without skill | Δ |
 |---|---|---|---|
 | Assertion pass rate | **100%** | 50% | **+50 pts** |
-| Eval-1 (QuickBooks, gated matrix) | 6/6 | 4/6 | |
-| Eval-2 (Mailchimp, lift handoff) | 6/6 | 2/6 | |
+| Eval-1 (FreshBooks, gated matrix) | 6/6 | 4/6 | |
+| Eval-2 (Klaviyo, lift handoff) | 6/6 | 2/6 | |
 
 ## What the skill changed
 

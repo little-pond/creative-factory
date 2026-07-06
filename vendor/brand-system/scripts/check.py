@@ -17,8 +17,8 @@ INPUT:
   --fineprint "..."       disclaimer text that lives elsewhere (so it isn't falsely flagged missing)
 
 USAGE:
-  python3 check.py turbotax.brand.json --text "Get your guaranteed maximum refund - 100% free!"
-  python3 check.py turbotax.brand.json --assets batch.json --out workspace/
+  python3 check.py northwind.brand.json --text "Get your guaranteed maximum refund - 100% free!"
+  python3 check.py northwind.brand.json --assets batch.json --out workspace/
 """
 
 import argparse

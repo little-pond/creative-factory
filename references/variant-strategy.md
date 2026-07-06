@@ -9,7 +9,7 @@ if it changes the creative in a way that changes performance:
 
 - **format** — non-negotiable. A Meta feed square, a TikTok 9:16 video, and a 728×90 banner are different
   creative objects; the same idea must be re-cut for each. This axis is about *fit*, not testing.
-- **message-pillar** — the *idea* being tested. For TurboTax: confidence vs ease vs "free for simple
+- **message-pillar** — the *idea* being tested. For Northwind Tax: confidence vs ease vs "free for simple
   returns". Different pillars are competing hypotheses about what moves the audience; the experiment will
   tell you which. Keep them genuinely distinct — two pillars that say the same thing waste impressions.
 - **audience** — the *personalization* axis, and the one the JD cares most about ("moving from
@@ -58,5 +58,5 @@ claim from a marketing one:
 - `cost_per_asset`, `hours`, `time_to_launch_days` are **assumptions** until you measure them on a real
   flight. The manifest labels them; don't quietly turn a placeholder into a headline number.
 - Volume and efficiency are production metrics. They are *not* lift. Only `lift-scorecard`, reading a real
-  holdout, can say the AI creative drove *incremental* GNS. Carry the manifest all the way there before
+  holdout, can say the AI creative drove *incremental* new customers. Carry the manifest all the way there before
   you claim the win — an unverified iROAS is worse than none.

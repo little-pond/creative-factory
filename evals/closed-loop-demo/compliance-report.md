@@ -1,4 +1,4 @@
-# Creative Factory — TurboTax TY25 prospecting — AI (Gen Studio) creative pilot (TurboTax)
+# Creative Factory — Northwind Tax TY25 prospecting — AI (Gen Studio) creative pilot (Northwind Tax)
 
 ## ⛔ 16/18 shippable · brand QA pass rate 89%
 
@@ -23,4 +23,11 @@
 | hours | 60 |
 | time_to_launch_days | 3 |
 
-_Next: fill the perf fields in `lift_handoff` after the flight and run `lift-scorecard` for incremental GNS / iROAS vs the agency arm._
+### Provenance (reproducibility)
+
+- Built: `2026-07-06T22:12:53+00:00`
+- Brand profile: `sha256:160ca87c7bb98d9f274c7b5fdd537dadeb86d130039b313c0b40729212a7753f`
+- Gate ruleset: `sha256:5748ad2e7831ecbd6aea86c7b5b3c98772c7e72e5b7f2d4515598092b892bc88`
+- _Same two hashes ⇒ the same rules gated this batch — record with the compliance sign-off._
+
+_Next: fill the perf fields in `lift_handoff` after the flight and run `lift-scorecard` for incremental new customers / iROAS vs the agency arm._

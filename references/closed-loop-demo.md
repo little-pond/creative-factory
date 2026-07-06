@@ -8,39 +8,39 @@ nothing is asserted by hand. Reproduced outputs live in `evals/closed-loop-demo/
  [1] geo-content-brief ──┐  what to say (answer-first claim, quotable facts)
                          ▼
  [2] brand-system ──► [3] CREATIVE-FACTORY ──► [4] experiment-designer ──► [5] lift-scorecard
-     voice + gate        format × pillar ×        size AI-vs-agency-          incremental GNS /
+     voice + gate        format × pillar ×        size AI-vs-agency-          incremental new customers /
                          audience matrix          vs-holdout test             iCPA / iROAS vs agency
                          → manifest + 89% gate
                          → (opt) rendered heroes
 ```
 
-The campaign carried through all five stages: **TurboTax TY25 prospecting — AI vs Agency creative.**
+The campaign carried through all five stages: **Northwind Tax TY25 prospecting — AI vs Agency creative.**
 
 ## [1] geo-content-brief → the angle
 
-`geo-visibility-tracker` found TurboTax loses purchase-intent queries (e.g. "is turbotax free") to
+`geo-visibility-tracker` found Northwind Tax loses purchase-intent queries (e.g. "is northwind free") to
 FreeTaxUSA / Cash App. `geo-content-brief` turned that gap into a brief whose answer-first claim is
 **"free for simple returns."** That claim is lifted into the campaign as a `geo_angle` — so GEO research
 becomes creative input instead of a document nobody actions:
 
 ```json
 "messaging": { "geo_angles": [{"angle": "free for simple returns",
-                               "source": "geo-content-brief: turbotax — is turbotax free"}] }
+                               "source": "geo-content-brief: northwind — is northwind free"}] }
 ```
 
 ## [2] brand-system → ground truth + the gate
 
-`assets/turbotax.campaign.json` points at `brand-system/assets/turbotax.brand.json` for voice, audiences,
+`assets/northwind.campaign.json` points at `brand-system/assets/northwind.brand.json` for voice, audiences,
 approved CTAs, and — critically — the **compliance gate** the factory runs every variant through.
 
 ## [3] creative-factory → the variants
 
 ```bash
-python3 scripts/factory.py plan  assets/turbotax.campaign.json --out variant-plan.json
+python3 scripts/factory.py plan  assets/northwind.campaign.json --out variant-plan.json
 #   PLAN: 18 variants = 3 formats × 3 pillars × 2 audiences   (the GEO angle folded in as the 3rd pillar)
 # (fill copy to spec + voice + compliance — assets/variants.example.json is the filled result)
 python3 scripts/factory.py build assets/variants.example.json \
-    --fineprint "~37% of taxpayers qualify for TurboTax Free Edition (simple Form 1040 returns only)." \
+    --fineprint "~37% of taxpayers qualify for Northwind Free Edition (simple Form 1040 returns only)." \
     --out out/ --render-prompts
 #   BUILD: 18 generated | 16 shippable | 1 BLOCK | 0 REVIEW | 1 char-fail
 #   brand_qa_pass_rate = 89%
@@ -94,7 +94,7 @@ $60**, produced at **$120/asset vs $1,500 (12.5× cheaper)** and **3 days to lau
 | "shipping production grade variants into ad platforms" | [3] per-platform spec + char-limit validation |
 | AI creative must pass legal/compliance gates (fintech) | [3] 89% gate pass; 1 BLOCK held back automatically |
 | "quantify AI driven lift over agency baselines" | [5] SCALE AI: +18% lift, iCPA $41.67 vs $60 |
-| "incremental GNS" north-star | [4]+[5] holdout-based incrementality, not last-click |
+| "incremental new customers" north-star | [4]+[5] holdout-based incrementality, not last-click |
 | AEO/GEO feeding creative | [1] geo-content-brief angle → [3] factory pillar |
 
 ## Honesty (read this)
@@ -102,4 +102,4 @@ $60**, produced at **$120/asset vs $1,500 (12.5× cheaper)** and **3 days to lau
 `assets` and `brand_qa_pass_rate` are **measured** by the build. The performance numbers in
 `loop_results.json` are **illustrative pilot figures** — a real claim requires a real flight with a real
 holdout. The loop is the method; the numbers above are a worked example proving the method runs, not a
-result from a live Intuit campaign.
+result from a live campaign.

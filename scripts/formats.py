@@ -144,6 +144,37 @@ def resolve_formats(spec_list):
     return out, skipped
 
 
+def safe_zone_violations(spec, boxes, W, H):
+    """P0 — enforce the declared safe zone. `safe_zone_px` per placement says where platform UI (caption,
+    CTA bar, profile icons, right rail) sits ON TOP of the creative; anything inside those bands gets
+    covered in the wild. This turns that declared-but-inert field into a check.
+
+    boxes: list of (name, x0, y0, x1, y1) in pixels on a W×H canvas (top-left origin).
+    Returns a list of (name, edge, overshoot_px) — empty means every box clears the safe zone.
+
+    Pure geometry, no Pillow — so compose.py enforces it and the unit test exercises it directly.
+    """
+    safe = spec.get("safe") or {}
+    if not safe:
+        return []
+    v = []
+    for name, x0, y0, x1, y1 in boxes:
+        if safe.get("top") and y0 < safe["top"]:
+            v.append((name, "top", int(safe["top"] - y0)))
+        if safe.get("bottom") and y1 > H - safe["bottom"]:
+            v.append((name, "bottom", int(y1 - (H - safe["bottom"]))))
+        if safe.get("left") and x0 < safe["left"]:
+            v.append((name, "left", int(safe["left"] - x0)))
+        if safe.get("right") and x1 > W - safe["right"]:
+            v.append((name, "right", int(x1 - (W - safe["right"]))))
+    return v
+
+
+def spec_for(platform, placement):
+    """Look up one placement spec by (platform, placement); {} if unknown."""
+    return FORMATS.get(platform, {}).get(placement, {})
+
+
 def check_lengths(copy, spec):
     """Validate a variant's copy dict against a format's char limits.
 

@@ -60,7 +60,7 @@ safe-zone pixels into every relevant row so the image prompt can compose around 
 
 - **single_image** — 1200×627 (1.91:1) or 1200×1200 (1:1). `intro_text` ≤150 (truncates on desktop),
   `headline` ≤70 (less visible on mobile). Register is **B2B / professional**, not consumer — for an
-  Intuit context this is QuickBooks/accountant-facing, not TurboTax consumer.
+  B2B context this is accountant-facing, not consumer.
 
 ## DV360 / programmatic display
 
