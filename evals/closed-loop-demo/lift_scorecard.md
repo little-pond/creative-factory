@@ -1,6 +1,6 @@
-# Lift Scorecard — TurboTax TY25 prospecting - AI (creative-factory) vs Agency creative
+# Lift Scorecard — Northwind Tax TY25 prospecting - AI (creative-factory) vs Agency creative
 
-**Primary metric:** incremental GNS (new filers) · **Method:** user-level holdout · **Holdout:** yes
+**Primary metric:** incremental new customers · **Method:** user-level holdout · **Holdout:** yes
 
 ## Verdict: SCALE AI
 

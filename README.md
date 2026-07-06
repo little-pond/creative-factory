@@ -5,9 +5,9 @@
 > incrementality experiment. A Claude Code skill. Not slides — it runs, and every number below is
 > reproduced by the included scripts.
 
-Built for the kind of workflow Adobe Gen Studio / Celtra production sits in, and against the Intuit
-*Marketing Futures — AI Marketing Manager* mandate ("creative production at scale", "production-grade
-variants into ad platforms", "embed AI into the campaign loop end to end").
+Built for the kind of production workflow Adobe Gen Studio / Celtra sit in: creative production at
+scale, production-grade variants shipped to ad-platform spec, and AI embedded into the campaign loop
+end to end. Vendor- and brand-agnostic — the worked example uses a fictional brand ("Northwind Tax").
 
 ---
 
@@ -21,7 +21,8 @@ variants you still have to eyeball one-by-one hasn't saved anyone anything.
 `creative-factory` owns the mechanical half so the only thing left to judgment is the words and the image:
 
 - **Matrix** — expands `format × message-pillar × audience` into one variant per cell.
-- **Spec** — writes each to the exact platform spec (Meta / Google / TikTok / LinkedIn / DV360 dims,
+- **Spec** — writes each to the exact platform spec (Meta / Google / TikTok / LinkedIn / DV360 / X /
+  YouTube / Pinterest / Snapchat / 小红书 — 10 channels, 27 placements — dims,
   safe zones, character limits) and fails anything that would truncate or sit under platform UI.
 - **Compliance gate** — runs every variant through a brand compliance gate (banned claims, missing
   disclaimers) so the safe ones ship automatically and the unsafe ones are held back. *That* is what makes
@@ -35,7 +36,7 @@ variants you still have to eyeball one-by-one hasn't saved anyone anything.
 
 ```bash
 # 1) plan the matrix
-python3 scripts/factory.py plan assets/turbotax.campaign.json --out /tmp/plan.json
+python3 scripts/factory.py plan assets/northwind.campaign.json --out /tmp/plan.json
 #   PLAN: 18 variants = 3 formats × 3 pillars × 2 audiences   (a GEO angle folded in as the 3rd pillar)
 
 # 2) build: validate spec + run the compliance gate + emit the manifest
@@ -49,24 +50,28 @@ python3 evals/factory_test.py
 The gate held back exactly the two that should never ship: a **banned-claim BLOCK** ("guaranteed maximum
 refund") and a **truncated headline** (38 chars in a 30-char RSA slot). The other 16 cleared automatically.
 
-> **Blind-tested** on brands it had never seen (QuickBooks, Mailchimp): with the skill, a fresh agent
+> **Blind-tested** on brands it had never seen (FreshBooks, Klaviyo): with the skill, a fresh agent
 > scored **100%**; without it, **50%** — drifting off-brief and fabricating its agency comparison. See
 > [`evals/BENCHMARK.md`](evals/BENCHMARK.md).
 
-## Real rendered creative
+## The render path (produce real assets)
 
-The hybrid render path runs end to end — `--render-prompts` → **`scripts/render.py`** (OpenRouter image
-models, the local Adobe-Gen-Studio-equivalent: **Gemini 3 Pro Image** by default, or Gemini Flash /
-OpenAI `gpt-5-image`) for the visual layer → `scripts/compose.py` to lay the gate-passed copy on top at
-exact platform dims:
+The hybrid render path runs end to end and is **opt-in** — no rendered assets are committed, so a fresh
+clone renders its own, for any brand:
 
-| | |
-|---|---|
-| ![](assets/heroes/ads/ad_meta-feed_confidence_first-time.png) | ![](assets/heroes/ads/ad_meta-feed_free_first-time.png) |
+```bash
+python3 scripts/factory.py build assets/variants.example.json --out out/ --render-prompts  # → out/render-queue.json
+python3 scripts/render.py  out/render-queue.json --go --max-cost 0.50                       # OpenRouter image models → heroes/
+python3 scripts/compose.py --image heroes/<id>.png --dims 1080x1080 --zone top \
+    --headline "File with confidence" --cta "Start for free" --brand "#1E5EB8" \
+    --wordmark "Northwind" --out out/ad.png                                                 # gate-passed copy on top
+```
 
-![](assets/heroes/ads/ad_linkedin_ease_self-employed.png)
-
-Each is a variant that **cleared the compliance gate**. See [`assets/heroes/`](assets/heroes/README.md).
+`render.py` drives **OpenRouter image models** (Gemini 3 Pro Image by default, or Gemini Flash / OpenAI
+`gpt-5-image`) as the local Adobe-Gen-Studio-equivalent, and injects an anti-slop constraint block so the
+hero isn't generic stock. `compose.py` (Pillow) lays the gate-passed copy on at exact platform dims,
+**keeps it out of the placement's safe zone, and checks legibility contrast**. Only the *shippable* rows
+render — the gate filtered the rest. See [`assets/heroes/`](assets/heroes/README.md) for the how-to.
 
 ## It closes the loop
 
@@ -76,11 +81,11 @@ Each is a variant that **cleared the compliance gate**. See [`assets/heroes/`](a
  geo-content-brief ──┐  what to say (answer-first claim, quotable facts)
                      ▼
  brand-system ──► creative-factory ──► experiment-designer ──► lift-scorecard
- voice + gate       format × pillar ×    size AI-vs-agency-      incremental GNS /
+ voice + gate       format × pillar ×    size AI-vs-agency-      incremental new customers /
                     audience matrix      vs-holdout test         iCPA / iROAS vs agency
 ```
 
-One TurboTax campaign carried through all five stages → **SCALE AI: +18% incremental lift, iCPA $41.67 vs
+One Northwind Tax campaign carried through all five stages → **SCALE AI: +18% incremental lift, iCPA $41.67 vs
 $60, $120/asset vs $1,500, 3 days vs 18.** Full walkthrough:
 [`references/closed-loop-demo.md`](references/closed-loop-demo.md).
 
@@ -103,26 +108,27 @@ Studio / DCO variant matrix", "make 50 on-brand versions of this ad".
 ```
 creative-factory/
 ├── SKILL.md                     ← the skill (workflow + division of labor)
-├── demo-script.md               ← 2-minute Loom storyboard of the closed loop
 ├── scripts/
-│   ├── factory.py               ← plan (matrix) + build (validate + gate + manifest + lift handoff)
-│   ├── formats.py               ← platform format registry (dims / safe zones / char limits)
-│   └── compose.py               ← (opt, Pillow) copy-on-hero finished-ad composer
-├── references/                  ← format-specs, variant-strategy, closed-loop-demo
-├── assets/                      ← campaign template + worked TurboTax example + heroes/ gallery
+│   ├── factory.py               ← plan (matrix) + build (validate + gate + dedup + manifest + lift handoff) + ingest
+│   ├── formats.py               ← platform format registry (dims / safe zones / char limits) + safe-zone check
+│   ├── formulas.py              ← 8 layout formulas from《排版的力量·54个排版公式》(drive wireframe + compose)
+│   ├── render.py                ← (opt) render hero prompts via OpenRouter (anti-slop + formula + layout-ref)
+│   └── compose.py               ← (opt, Pillow) copy-on-hero composer (formula layout + safe-zone + contrast)
+├── references/                  ← format-specs, variant-strategy, anti-slop-image, closed-loop-demo
+├── assets/                      ← campaign template + worked (fictional) Northwind Tax example
 ├── evals/                       ← factory_test.py + reproduced closed-loop-demo outputs
 └── vendor/brand-system/         ← vendored compliance gate (so it runs standalone)
 ```
 
-## How it maps to the role
+## What it gives you
 
-| JD line | Where |
+| Capability | Where |
 |---|---|
-| "creative production at scale … on-brand variants" | the `format × pillar × audience` matrix |
-| "shipping production grade variants into ad platforms" | per-platform spec + char-limit validation |
-| AI creative must pass legal/compliance gates (fintech) | the compliance gate; 89% auto-clear, BLOCKs held back |
-| "embed AI into the campaign loop end to end" | the closed-loop demo (brief → factory → experiment → readout) |
-| "incremental GNS", "AI lift over agency baselines" | the manifest → `lift-scorecard` handoff → SCALE AI |
+| Creative production at scale — on-brand variants | the `format × pillar × audience` matrix |
+| Production-grade variants to ad-platform spec | per-platform spec + char-limit validation |
+| Legal/compliance gating for regulated industries | the compliance gate; 89% auto-clear, BLOCKs held back |
+| AI embedded in the campaign loop end to end | the closed-loop demo (brief → factory → experiment → readout) |
+| Incremental lift vs an agency baseline | the manifest → `lift-scorecard` handoff |
 
 ## Honesty
 

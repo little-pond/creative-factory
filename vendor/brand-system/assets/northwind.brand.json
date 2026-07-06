@@ -1,10 +1,10 @@
 {
   "identity": {
-    "brand": "TurboTax",
-    "parent": "Intuit",
-    "legal_entity": "Intuit Inc.",
-    "entity_fact": "TurboTax is Intuit's consumer tax-preparation software for filing federal and state income tax returns.",
-    "domain": "turbotax.intuit.com"
+    "brand": "Northwind Tax",
+    "parent": "Northwind Financial, Inc.",
+    "legal_entity": "Northwind Financial, Inc.",
+    "entity_fact": "Northwind Tax is a consumer tax-preparation product for filing federal and state income tax returns (a fictional brand used as a worked example).",
+    "domain": "northwindtax.example.com"
   },
   "audience": [
     {"segment": "first-time filers", "note": "anxious; needs reassurance and simplicity"},
@@ -19,15 +19,15 @@
     "banned_tone_words": ["scary", "terrifying", "penalty", "audit risk", "don't get caught"]
   },
   "visual": {
-    "palette": {"primary": "#355EBE", "accent": "#FBB034", "neutral_dark": "#1A1A1A", "bg": "#FFFFFF"},
-    "fonts": {"display": "Avenir Next", "body": "Avenir Next"},
+    "palette": {"primary": "#1E5EB8", "accent": "#FBB034", "neutral_dark": "#1A1A1A", "bg": "#FFFFFF"},
+    "fonts": {"display": "Inter", "body": "Inter"},
     "logo_rules": "Min clear space = logo height. Never recolor, stretch, or place on busy imagery.",
     "imagery": {"do": ["real people, warm natural lighting", "approachable, calm"], "dont": ["stock-cliché handshakes", "fear or stress imagery", "fake-looking money shots"]}
   },
   "messaging": {
     "pillars": ["confidence", "maximum refund", "ease"],
     "approved_value_props": ["File with confidence", "Get every dollar you deserve", "Taxes done right"],
-    "approved_ctas": ["Start for free", "File with TurboTax", "Get started"]
+    "approved_ctas": ["Start for free", "File with Northwind Tax", "Get started"]
   },
   "compliance": {
     "banned_patterns": [
@@ -42,10 +42,10 @@
       {"phrase": "100% free", "severity": "review", "reason": "Free Edition is not for all filers — requires qualifier + eligibility disclaimer."}
     ],
     "required_disclaimers": [
-      {"id": "free_edition", "trigger_keywords": ["free", "$0", "no cost"], "marker": "Free Edition", "required_text": "~37% of taxpayers qualify for TurboTax Free Edition (simple Form 1040 returns only).", "reason": "'Free' claims require an eligibility disclaimer."},
+      {"id": "free_edition", "trigger_keywords": ["free", "$0", "no cost"], "marker": "Free Edition", "required_text": "~37% of taxpayers qualify for Northwind Free Edition (simple Form 1040 returns only).", "reason": "'Free' claims require an eligibility disclaimer."},
       {"id": "max_refund", "trigger_keywords": ["maximum refund", "biggest refund", "max refund", "every dollar"], "marker": "Maximum Refund Guarantee", "required_text": "See Maximum Refund Guarantee terms and conditions.", "reason": "Refund-maximization claims require the guarantee-terms disclaimer."}
     ],
     "review_required_topics": ["audit", "IRS", "guarantee", "refund amount", "comparative pricing"]
   },
-  "meta": {"version": "1.0", "owner": "TurboTax brand marketing + Legal", "last_reviewed": "2026-06-22", "note": "Demonstration profile — figures/disclaimer wording are illustrative, not Intuit-approved."}
+  "meta": {"version": "1.0", "owner": "Northwind Tax brand marketing + Legal", "last_reviewed": "2026-06-22", "note": "Demonstration profile — figures/disclaimer wording are illustrative, illustrative only."}
 }

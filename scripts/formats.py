@@ -44,6 +44,20 @@ FORMATS = {
             "limits": {"primary_text": 125, "headline": 40},
             "note": "Reels UI eats the bottom ~35% (caption + CTA + audio) and the right rail (icons). Hook in first 3s.",
         },
+        "feed_4x5": {
+            "dims": [1080, 1350], "aspect": "4:5", "asset": "image",
+            "safe": {"top": 0, "bottom": 0, "left": 0, "right": 0},
+            "fields": ["primary_text", "headline", "description", "cta"],
+            "limits": {"primary_text": 125, "headline": 40, "description": 30},
+            "note": "4:5 (1080x1350) earns the most vertical feed real estate on mobile — prefer over 1:1 when the visual is portrait-friendly.",
+        },
+        "carousel": {
+            "dims": [1080, 1080], "aspect": "1:1", "asset": "image",
+            "safe": {"top": 0, "bottom": 0, "left": 0, "right": 0},
+            "fields": ["primary_text", "headline", "description", "cta"],
+            "limits": {"primary_text": 125, "headline": 40, "description": 20},
+            "note": "2-10 cards, each 1080x1080 (or 1080x1350). primary_text is shared; headline+description are per-card. Each card is its own hero.",
+        },
     },
     "google": {
         "rsa": {  # Responsive Search Ad — text only
@@ -71,6 +85,13 @@ FORMATS = {
             "limits": {"caption": 100},
             "note": "Native-first: looks like organic, not an ad. Right rail (icons) + bottom (handle/caption/CTA) are covered — keep key elements centred. Hook in 1-2s.",
         },
+        "topview": {
+            "dims": [1080, 1920], "aspect": "9:16", "asset": "video",
+            "safe": {"top": 130, "bottom": 400, "left": 0, "right": 140},
+            "fields": ["caption", "cta"],
+            "limits": {"caption": 100},
+            "note": "Full-screen takeover on app open; less UI in the first seconds than in-feed, but keep key content out of the bottom ~20% and the right rail. Sound-on.",
+        },
     },
     "linkedin": {
         "single_image": {
@@ -80,6 +101,28 @@ FORMATS = {
             "fields": ["intro_text", "headline", "cta"],
             "limits": {"intro_text": 150, "headline": 70},
             "note": "Intro text truncates ~150 on desktop; headline ~70 (less visible on mobile). B2B register, not consumer.",
+        },
+        "carousel": {
+            "dims": [1080, 1080], "aspect": "1:1", "asset": "image",
+            "safe": None,
+            "fields": ["intro_text", "headline", "cta"],
+            "limits": {"intro_text": 150, "headline": 45},
+            "note": "2-10 cards, each 1080x1080. Card headline ~45 chars. B2B register.",
+        },
+        "video": {
+            "dims": [1080, 1080], "aspect": "1:1", "asset": "video",
+            "secondary_dims": [1920, 1080],
+            "safe": None,
+            "fields": ["intro_text", "headline", "cta"],
+            "limits": {"intro_text": 150, "headline": 70},
+            "note": "1:1 (feed) or 16:9; hook in first 3s. Captions on — most B2B video is watched muted.",
+        },
+        "document": {
+            "dims": [1080, 1080], "aspect": "1:1", "asset": "image",
+            "safe": None,
+            "fields": ["intro_text", "headline", "cta"],
+            "limits": {"intro_text": 150, "headline": 70},
+            "note": "Multi-page PDF ad (carousel of pages, each 1080x1080 or 1620x1080). High dwell; treat each page as a slide.",
         },
     },
     "dv360": {
@@ -104,6 +147,87 @@ FORMATS = {
             "note": "Mobile banner — tiny. CTA-led, almost no body.",
         },
     },
+    "x": {  # X / Twitter
+        "single_image": {
+            "dims": [1600, 900], "aspect": "16:9", "asset": "image",
+            "secondary_dims": [1200, 628],
+            "safe": None,
+            "fields": ["copy", "headline", "cta"],
+            "limits": {"copy": 280, "headline": 70},
+            "note": "Image / website card. 16:9 (1600x900) or 1.91:1 (1200x628). Tweet copy <=280; card headline ~70.",
+        },
+        "carousel": {
+            "dims": [1080, 1080], "aspect": "1:1", "asset": "image",
+            "safe": None,
+            "fields": ["copy", "headline", "cta"],
+            "limits": {"copy": 280, "headline": 70},
+            "note": "2-6 cards, each 1:1 (800x800+) or 1.91:1. Shared tweet copy + per-card headline.",
+        },
+    },
+    "youtube": {
+        "shorts": {
+            "dims": [1080, 1920], "aspect": "9:16", "asset": "video",
+            "safe": {"top": 80, "bottom": 320, "left": 0, "right": 100},
+            "fields": ["headline", "description", "cta"],
+            "limits": {"headline": 40, "description": 70},
+            "note": "Vertical video ad. Bottom ~17% (title/handle/actions) + right rail (icons) covered. Hook in 1-2s; text is minimal companion, the video carries it.",
+        },
+        "in_stream": {
+            "dims": [1920, 1080], "aspect": "16:9", "asset": "video",
+            "safe": {"top": 0, "bottom": 120, "left": 0, "right": 0},
+            "fields": ["headline", "description", "cta"],
+            "limits": {"headline": 15, "description": 35},
+            "note": "Skippable in-stream (skip at 5s) — front-load brand + hook. Bottom band holds the skip/CTA overlay.",
+        },
+        "thumbnail": {
+            "dims": [1280, 720], "aspect": "16:9", "asset": "image",
+            "safe": None,
+            "fields": ["headline"],
+            "limits": {"headline": 40},
+            "note": "Custom video thumbnail — a real design asset. Huge, minimal text (<=4 words); must read at 168x94 mobile size. Faces + high contrast win.",
+        },
+    },
+    "pinterest": {
+        "standard_pin": {
+            "dims": [1000, 1500], "aspect": "2:3", "asset": "image",
+            "safe": None,
+            "fields": ["title", "description", "cta"],
+            "limits": {"title": 100, "description": 500},
+            "note": "2:3 (1000x1500) is native; text overlaid on the image reads best. ~40 of the title shows in feed. Long-life, search-driven.",
+        },
+        "idea_pin": {
+            "dims": [1080, 1920], "aspect": "9:16", "asset": "video",
+            "safe": {"top": 130, "bottom": 200, "left": 0, "right": 0},
+            "fields": ["title", "cta"],
+            "limits": {"title": 100},
+            "note": "Multi-page vertical (image/video). Keep text out of the top ~7% and bottom ~10% UI.",
+        },
+    },
+    "snapchat": {
+        "single": {
+            "dims": [1080, 1920], "aspect": "9:16", "asset": "video",
+            "safe": {"top": 150, "bottom": 150, "left": 0, "right": 0},
+            "fields": ["brand_name", "headline", "cta"],
+            "limits": {"brand_name": 25, "headline": 34},
+            "note": "Full-screen single image/video. Keep content out of top ~150 (brand) / bottom ~150 (swipe-up CTA). Brand name <=25, headline <=34.",
+        },
+    },
+    "xiaohongshu": {  # 小红书 / RED
+        "note_cover": {
+            "dims": [1080, 1440], "aspect": "3:4", "asset": "image",
+            "safe": None,
+            "fields": ["title", "body", "cta"],
+            "limits": {"title": 20, "body": 1000},
+            "note": "小红书封面竖版 3:4 (1080x1440) 最占版面。封面大标题 <=20 字;正文 <=1000 字。真人实拍/生活化更原生,忌硬广。",
+        },
+        "note_square": {
+            "dims": [1080, 1080], "aspect": "1:1", "asset": "image",
+            "safe": None,
+            "fields": ["title", "body", "cta"],
+            "limits": {"title": 20, "body": 1000},
+            "note": "小红书 1:1 封面。标题 <=20 字。多图笔记的首图=封面,决定点击率。",
+        },
+    },
 }
 
 # Sensible default placement(s) per platform when a campaign names a platform but not a placement.
@@ -113,6 +237,11 @@ DEFAULT_PLACEMENT = {
     "tiktok": ["infeed"],
     "linkedin": ["single_image"],
     "dv360": ["display_300x250", "display_728x90"],
+    "x": ["single_image"],
+    "youtube": ["shorts", "thumbnail"],
+    "pinterest": ["standard_pin"],
+    "snapchat": ["single"],
+    "xiaohongshu": ["note_cover"],
 }
 
 
@@ -142,6 +271,37 @@ def resolve_formats(spec_list):
                 continue
             out.append({"key": f"{platform}:{pl}", "platform": platform, "placement": pl, "spec": spec})
     return out, skipped
+
+
+def safe_zone_violations(spec, boxes, W, H):
+    """P0 — enforce the declared safe zone. `safe_zone_px` per placement says where platform UI (caption,
+    CTA bar, profile icons, right rail) sits ON TOP of the creative; anything inside those bands gets
+    covered in the wild. This turns that declared-but-inert field into a check.
+
+    boxes: list of (name, x0, y0, x1, y1) in pixels on a W×H canvas (top-left origin).
+    Returns a list of (name, edge, overshoot_px) — empty means every box clears the safe zone.
+
+    Pure geometry, no Pillow — so compose.py enforces it and the unit test exercises it directly.
+    """
+    safe = spec.get("safe") or {}
+    if not safe:
+        return []
+    v = []
+    for name, x0, y0, x1, y1 in boxes:
+        if safe.get("top") and y0 < safe["top"]:
+            v.append((name, "top", int(safe["top"] - y0)))
+        if safe.get("bottom") and y1 > H - safe["bottom"]:
+            v.append((name, "bottom", int(y1 - (H - safe["bottom"]))))
+        if safe.get("left") and x0 < safe["left"]:
+            v.append((name, "left", int(safe["left"] - x0)))
+        if safe.get("right") and x1 > W - safe["right"]:
+            v.append((name, "right", int(x1 - (W - safe["right"]))))
+    return v
+
+
+def spec_for(platform, placement):
+    """Look up one placement spec by (platform, placement); {} if unknown."""
+    return FORMATS.get(platform, {}).get(placement, {})
 
 
 def check_lengths(copy, spec):

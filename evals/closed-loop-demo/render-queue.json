@@ -6,7 +6,14 @@
       1080
     ],
     "platform": "meta",
-    "image_prompt": "A first-time filer relaxed at a laptop in warm natural morning light, calm and reassured, soft TurboTax-blue accents, approachable and modern, real person not stock-cliche."
+    "placement": "feed",
+    "safe": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "image_prompt": "A first-time filer relaxed at a laptop in warm natural morning light, calm and reassured, soft Northwind Tax-blue accents, approachable and modern, real person not stock-cliche."
   },
   {
     "id": "meta_feed__ease__first_time_filers",
@@ -15,7 +22,14 @@
       1080
     ],
     "platform": "meta",
-    "image_prompt": "Close-up of a phone photographing a W-2, TurboTax app auto-filling fields, clean bright kitchen-table setting, warm and effortless."
+    "placement": "feed",
+    "safe": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "image_prompt": "Close-up of a phone photographing a W-2, Northwind Tax app auto-filling fields, clean bright kitchen-table setting, warm and effortless."
   },
   {
     "id": "meta_feed__ease__self_employed",
@@ -24,7 +38,14 @@
       1080
     ],
     "platform": "meta",
-    "image_prompt": "A freelancer at a tidy desk, 1099s importing into TurboTax on screen, relaxed posture, warm natural light, blue accents."
+    "placement": "feed",
+    "safe": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "image_prompt": "A freelancer at a tidy desk, 1099s importing into Northwind Tax on screen, relaxed posture, warm natural light, blue accents."
   },
   {
     "id": "meta_feed__free_for_simple_returns__first_time_filers",
@@ -33,7 +54,14 @@
       1080
     ],
     "platform": "meta",
-    "image_prompt": "A young first-time filer smiling at a laptop, light and breezy, TurboTax-blue accents, sense of relief and simplicity."
+    "placement": "feed",
+    "safe": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "image_prompt": "A young first-time filer smiling at a laptop, light and breezy, Northwind Tax-blue accents, sense of relief and simplicity."
   },
   {
     "id": "meta_feed__free_for_simple_returns__self_employed",
@@ -42,6 +70,13 @@
       1080
     ],
     "platform": "meta",
+    "placement": "feed",
+    "safe": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
     "image_prompt": "A small-business owner starting taxes on a tablet in a cafe, calm and in control, warm light, blue accents."
   },
   {
@@ -51,7 +86,9 @@
       627
     ],
     "platform": "linkedin",
-    "image_prompt": "Professional, clean 1.91:1 composition of a confident young professional at a desk, TurboTax-blue brand accent, B2B register."
+    "placement": "single_image",
+    "safe": null,
+    "image_prompt": "Professional, clean 1.91:1 composition of a confident young professional at a desk, Northwind Tax-blue brand accent, B2B register."
   },
   {
     "id": "linkedin_single_image__confidence__self_employed",
@@ -60,6 +97,8 @@
       627
     ],
     "platform": "linkedin",
+    "placement": "single_image",
+    "safe": null,
     "image_prompt": "A self-employed professional in a workshop/office, composed and confident, clean 1.91:1 layout, blue accent."
   },
   {
@@ -69,7 +108,9 @@
       627
     ],
     "platform": "linkedin",
-    "image_prompt": "Clean professional scene of an easy guided flow on a laptop, calm tones, TurboTax-blue accent."
+    "placement": "single_image",
+    "safe": null,
+    "image_prompt": "Clean professional scene of an easy guided flow on a laptop, calm tones, Northwind Tax-blue accent."
   },
   {
     "id": "linkedin_single_image__ease__self_employed",
@@ -78,6 +119,8 @@
       627
     ],
     "platform": "linkedin",
+    "placement": "single_image",
+    "safe": null,
     "image_prompt": "A busy founder focused on their craft while taxes handle themselves on a nearby screen, 1.91:1, warm professional light."
   },
   {
@@ -87,7 +130,9 @@
       627
     ],
     "platform": "linkedin",
-    "image_prompt": "Bright, optimistic 1.91:1 scene of a first-time filer finishing quickly, TurboTax-blue accent."
+    "placement": "single_image",
+    "safe": null,
+    "image_prompt": "Bright, optimistic 1.91:1 scene of a first-time filer finishing quickly, Northwind Tax-blue accent."
   },
   {
     "id": "linkedin_single_image__free_for_simple_returns__self_employed",
@@ -96,6 +141,8 @@
       627
     ],
     "platform": "linkedin",
+    "placement": "single_image",
+    "safe": null,
     "image_prompt": "A confident freelancer starting their return on a laptop, professional 1.91:1 composition, blue accent."
   }
 ]

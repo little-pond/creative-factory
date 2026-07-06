@@ -1,10 +1,10 @@
-# Experiment Design — TurboTax TY25 prospecting — AI (Gen Studio) vs Agency creative
+# Experiment Design — Northwind Tax TY25 prospecting — AI (Gen Studio) vs Agency creative
 
-**Primary metric:** incremental GNS (new filers) · **Confidence:** 95% · **Power:** 80%
+**Primary metric:** incremental new customers · **Confidence:** 95% · **Power:** 80%
 
 ## Hypothesis (pre-registered)
 
-AI-produced creative drives >= 10% incremental lift in GNS at an iCPA <= the agency baseline.
+AI-produced creative drives >= 10% incremental lift in new customers at an iCPA <= the agency baseline.
 
 ## Design
 

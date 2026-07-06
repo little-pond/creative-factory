@@ -1,25 +1,43 @@
-# Hero Gallery — real rendered creative
+# heroes/ — the render output dir (nothing committed)
 
-These are **real assets the factory produced**, not stock — the hybrid render path end to end:
-`factory.py build --render-prompts` emitted the prompts → `scripts/render.py` rendered the visual layer
-via **OpenRouter → Google Gemini 3 Pro Image** (the local Adobe-Gen-Studio-equivalent; key from `~/.env`)
-→ `compose.py` laid the **gate-passed copy** onto each at exact platform spec.
+Rendered creative is **generated on demand, not checked in** — a fresh clone stays lean, and the assets
+are always for *your* brand, not a bundled example. The hybrid render path produces them end to end:
 
-Every ad here corresponds to a variant that **cleared the 18-cell TurboTax run's compliance gate**
-(the 2 that didn't — the banned-claim BLOCK and the truncated headline — were never rendered).
+```bash
+# 1) emit the render queue for the shippable rows (the gate filtered the rest)
+python3 scripts/factory.py build assets/variants.example.json --out out/ --render-prompts
 
-| Finished ad | Format | Pillar × Audience | Headline | CTA |
-|---|---|---|---|---|
-| `ads/ad_meta-feed_confidence_first-time.png` | Meta feed 1080×1080 | confidence × first-time filers | "File with confidence" | Start for free |
-| `ads/ad_meta-feed_free_first-time.png` | Meta feed 1080×1080 | free (GEO-fed) × first-time filers | "File simple returns free" | Start for free |
-| `ads/ad_linkedin_ease_self-employed.png` | LinkedIn 1200×627 | ease × self-employed | "Self-employed taxes without the busywork" | File with TurboTax |
+# 2) render the visual layer via OpenRouter image models (spend-safe: no --go renders nothing)
+python3 scripts/render.py out/render-queue.json --go --max-cost 0.50        # → assets/heroes/<id>.png
 
-`heroes/*.png` = the raw rendered visual layer (no copy); `heroes/ads/*.png` = the composed finished ad.
-The split is deliberate — one hero serves many headlines/audiences, which is exactly how DCO / Gen Studio
-reuse a visual across a variant matrix.
+# 3) lay the gate-passed copy on top at exact platform dims
+python3 scripts/compose.py --image assets/heroes/<id>.png --dims 1080x1080 --zone top \
+    --headline "File with confidence" --body "First time filing? We guide every step." \
+    --cta "Start for free" --brand "#1E5EB8" --wordmark "Northwind" --out assets/heroes/ads/<id>.png
+```
 
-**Notes**
-- Brand palette shows through on purpose: TurboTax-blue CTA (#355EBE), warm accent (#FBB034 — the scarf).
-- Display font is Helvetica Neue as a stand-in for the brand font (Avenir Next); swap for production.
-- `compose.py` needs Pillow; it's the one optional non-stdlib piece (the render path is opt-in).
-- Illustrative demo for a portfolio — not Intuit-approved creative.
+## Why the two-step split (hero → composed ad)
+
+`render.py` makes the **hero** (the visual layer, no copy). `compose.py` makes the **finished ad** (copy
+laid on top). The split is deliberate: one hero serves many headlines/audiences — exactly how DCO / Gen
+Studio reuse a single visual across a variant matrix.
+
+## What the pipeline enforces for you
+
+- **`render.py`** injects an anti-slop constraint block (`references/anti-slop-image.md`) into every
+  prompt, so the hero reads on-brand instead of generic stock. Add `--layout-ref --copy-zone bottom` and
+  it also passes a **layout wireframe** (copy zone + focal-subject zone + safe bands, drawn from
+  `formats.py`) to the model as an `--input`, so the hero reserves clean negative space for the copy.
+- **`compose.py`** lays the copy out to a **layout formula** (`--formula`, from 《排版的力量·54个排版公式》
+  via `formulas.py`), keeps it **out of the placement's safe zone** (`formats.py` `safe_zone_px`), and
+  checks a **legibility-contrast floor** against the hero pixels under the copy, auto-strengthening the
+  scrim when it fails. Use the **same `--formula` on render and compose** so the hero and the typesetting
+  agree.
+
+## Notes
+
+- `render.py` bills your OpenRouter key (`OPENROUTER_API_KEY` in `~/.env`); `compose.py` needs Pillow.
+  Both are the optional, non-stdlib render half — the core matrix/gate/manifest is pure stdlib.
+- `compose.py`'s display font is Helvetica Neue / Arial as a stand-in — swap in the real brand font
+  (`Inter` in the worked example) for production.
+- Everything here is illustrative; the worked example brand ("Northwind Tax") is fictional.

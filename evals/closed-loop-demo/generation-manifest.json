@@ -1,6 +1,6 @@
 {
-  "campaign": "TurboTax TY25 prospecting — AI (Gen Studio) creative pilot",
-  "brand": "TurboTax",
+  "campaign": "Northwind Tax TY25 prospecting — AI (Gen Studio) creative pilot",
+  "brand": "Northwind Tax",
   "matrix": {
     "formats": 3,
     "pillars": 3,
@@ -14,7 +14,21 @@
     "review_required": 0,
     "char_fail": 1,
     "brand_qa_pass_rate": 0.8889,
+    "near_duplicate_pairs": 0,
     "gate": "brand-system check.py"
+  },
+  "provenance": {
+    "created_at": "2026-07-06T22:32:16+00:00",
+    "brand_profile": "../brand-system/assets/northwind.brand.json",
+    "brand_profile_hash": "sha256:160ca87c7bb98d9f274c7b5fdd537dadeb86d130039b313c0b40729212a7753f",
+    "gate_ruleset_hash": "sha256:5748ad2e7831ecbd6aea86c7b5b3c98772c7e72e5b7f2d4515598092b892bc88",
+    "format_registry_hash": "sha256:ff65b5fc0f6b2b30038a335642212abce73b47cfd607616e4c3170ebe603084c",
+    "_use": "reproducibility — same brand_profile_hash + gate_ruleset_hash ⇒ the same rules gated this batch. Record it with a compliance sign-off."
+  },
+  "differentiation": {
+    "_use": "audience axes earn their cost only if copy actually changes per segment; these pairs share format+pillar, differ by audience, but read near-identical — collapse or rewrite.",
+    "threshold": 0.85,
+    "near_duplicate_pairs": []
   },
   "production_efficiency": {
     "assets": 16,
@@ -54,12 +68,12 @@
         1080
       ],
       "copy": {
-        "primary_text": "First time filing? TurboTax walks you through every step in plain language, so you can file knowing it's done right.",
+        "primary_text": "First time filing? Northwind Tax walks you through every step in plain language, so you can file knowing it's done right.",
         "headline": "File with confidence",
         "description": "Taxes done right",
         "cta": "Start for free"
       },
-      "image_prompt": "A first-time filer relaxed at a laptop in warm natural morning light, calm and reassured, soft TurboTax-blue accents, approachable and modern, real person not stock-cliche.",
+      "image_prompt": "A first-time filer relaxed at a laptop in warm natural morning light, calm and reassured, soft Northwind Tax-blue accents, approachable and modern, real person not stock-cliche.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "PASS",
@@ -81,9 +95,9 @@
         "primary_text": "Self-employed? Get your guaranteed maximum refund and every dollar you deserve.",
         "headline": "Maximize your deductions",
         "description": "Schedule C made simple",
-        "cta": "File with TurboTax"
+        "cta": "File with Northwind Tax"
       },
-      "image_prompt": "A self-employed creative professional in a bright home studio reviewing finances confidently, warm light, TurboTax-blue accents.",
+      "image_prompt": "A self-employed creative professional in a bright home studio reviewing finances confidently, warm light, Northwind Tax-blue accents.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "BLOCK",
@@ -124,12 +138,12 @@
         1080
       ],
       "copy": {
-        "primary_text": "Snap a photo of your W-2 and TurboTax fills in the rest. Filing your taxes takes minutes, not a weekend.",
+        "primary_text": "Snap a photo of your W-2 and Northwind Tax fills in the rest. Filing your taxes takes minutes, not a weekend.",
         "headline": "Taxes made simple",
         "description": "Done in minutes",
         "cta": "Start for free"
       },
-      "image_prompt": "Close-up of a phone photographing a W-2, TurboTax app auto-filling fields, clean bright kitchen-table setting, warm and effortless.",
+      "image_prompt": "Close-up of a phone photographing a W-2, Northwind Tax app auto-filling fields, clean bright kitchen-table setting, warm and effortless.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "PASS",
@@ -148,12 +162,12 @@
         1080
       ],
       "copy": {
-        "primary_text": "Import your 1099s and TurboTax finds the self-employed deductions that fit your work - no spreadsheets required.",
+        "primary_text": "Import your 1099s and Northwind Tax finds the self-employed deductions that fit your work - no spreadsheets required.",
         "headline": "Self-employed taxes, simplified",
         "description": "Deductions made easy",
-        "cta": "File with TurboTax"
+        "cta": "File with Northwind Tax"
       },
-      "image_prompt": "A freelancer at a tidy desk, 1099s importing into TurboTax on screen, relaxed posture, warm natural light, blue accents.",
+      "image_prompt": "A freelancer at a tidy desk, 1099s importing into Northwind Tax on screen, relaxed posture, warm natural light, blue accents.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "PASS",
@@ -172,12 +186,12 @@
         1080
       ],
       "copy": {
-        "primary_text": "Simple return? File federal and state for $0 with TurboTax Free Edition.",
+        "primary_text": "Simple return? File federal and state for $0 with Northwind Free Edition.",
         "headline": "File simple returns free",
         "description": "$0 fed & state",
         "cta": "Start for free"
       },
-      "image_prompt": "A young first-time filer smiling at a laptop, light and breezy, TurboTax-blue accents, sense of relief and simplicity.",
+      "image_prompt": "A young first-time filer smiling at a laptop, light and breezy, Northwind Tax-blue accents, sense of relief and simplicity.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "PASS",
@@ -196,7 +210,7 @@
         1080
       ],
       "copy": {
-        "primary_text": "Start your return for $0 with TurboTax Free Edition. If your self-employed forms need more, upgrade only when you do.",
+        "primary_text": "Start your return for $0 with Northwind Free Edition. If your self-employed forms need more, upgrade only when you do.",
         "headline": "Start free, pay only if you upgrade",
         "description": "No surprises",
         "cta": "Get started"
@@ -220,11 +234,11 @@
         627
       ],
       "copy": {
-        "intro_text": "Filing for the first time shouldn't feel like a test. TurboTax guides you line by line so you file with confidence.",
+        "intro_text": "Filing for the first time shouldn't feel like a test. Northwind Tax guides you line by line so you file with confidence.",
         "headline": "File your first return with confidence",
         "cta": "Get started"
       },
-      "image_prompt": "Professional, clean 1.91:1 composition of a confident young professional at a desk, TurboTax-blue brand accent, B2B register.",
+      "image_prompt": "Professional, clean 1.91:1 composition of a confident young professional at a desk, Northwind Tax-blue brand accent, B2B register.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "PASS",
@@ -243,9 +257,9 @@
         627
       ],
       "copy": {
-        "intro_text": "Running your own business is hard enough. TurboTax helps self-employed filers get it right and file with confidence.",
+        "intro_text": "Running your own business is hard enough. Northwind Tax helps self-employed filers get it right and file with confidence.",
         "headline": "Self-employed taxes, filed with confidence",
-        "cta": "File with TurboTax"
+        "cta": "File with Northwind Tax"
       },
       "image_prompt": "A self-employed professional in a workshop/office, composed and confident, clean 1.91:1 layout, blue accent.",
       "char_check": "PASS",
@@ -266,11 +280,11 @@
         627
       ],
       "copy": {
-        "intro_text": "Your first return, without the stress. Import your W-2, answer a few questions, and TurboTax handles the rest.",
+        "intro_text": "Your first return, without the stress. Import your W-2, answer a few questions, and Northwind Tax handles the rest.",
         "headline": "Your first tax return, made simple",
         "cta": "Start for free"
       },
-      "image_prompt": "Clean professional scene of an easy guided flow on a laptop, calm tones, TurboTax-blue accent.",
+      "image_prompt": "Clean professional scene of an easy guided flow on a laptop, calm tones, Northwind Tax-blue accent.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "PASS",
@@ -289,9 +303,9 @@
         627
       ],
       "copy": {
-        "intro_text": "Spend less time on taxes and more on your business. TurboTax imports your 1099s and surfaces deductions that fit.",
+        "intro_text": "Spend less time on taxes and more on your business. Northwind Tax imports your 1099s and surfaces deductions that fit.",
         "headline": "Self-employed taxes without the busywork",
-        "cta": "File with TurboTax"
+        "cta": "File with Northwind Tax"
       },
       "image_prompt": "A busy founder focused on their craft while taxes handle themselves on a nearby screen, 1.91:1, warm professional light.",
       "char_check": "PASS",
@@ -312,11 +326,11 @@
         627
       ],
       "copy": {
-        "intro_text": "If your return is simple, you may be able to file federal and state for $0 with TurboTax Free Edition.",
-        "headline": "Simple returns can file free with TurboTax Free Edition",
+        "intro_text": "If your return is simple, you may be able to file federal and state for $0 with Northwind Free Edition.",
+        "headline": "Simple returns can file free with Northwind Free Edition",
         "cta": "Start for free"
       },
-      "image_prompt": "Bright, optimistic 1.91:1 scene of a first-time filer finishing quickly, TurboTax-blue accent.",
+      "image_prompt": "Bright, optimistic 1.91:1 scene of a first-time filer finishing quickly, Northwind Tax-blue accent.",
       "char_check": "PASS",
       "char_issues": [],
       "compliance": "PASS",
@@ -335,7 +349,7 @@
         627
       ],
       "copy": {
-        "intro_text": "Start your return for $0 with TurboTax Free Edition and upgrade only if your self-employed forms call for it.",
+        "intro_text": "Start your return for $0 with Northwind Free Edition and upgrade only if your self-employed forms call for it.",
         "headline": "Start free, upgrade only when your return needs it",
         "cta": "Get started"
       },
@@ -375,7 +389,7 @@
       "dims": null,
       "copy": {
         "headline": "Self-Employed Tax Filing",
-        "description": "Built for 1099 and Schedule C filers. File accurately with TurboTax."
+        "description": "Built for 1099 and Schedule C filers. File accurately with Northwind Tax."
       },
       "image_prompt": null,
       "char_check": "PASS",
@@ -394,7 +408,7 @@
       "dims": null,
       "copy": {
         "headline": "Taxes Made Simple",
-        "description": "Import your W-2 and file in minutes with TurboTax. Simple returns, done fast."
+        "description": "Import your W-2 and file in minutes with Northwind Tax. Simple returns, done fast."
       },
       "image_prompt": null,
       "char_check": "PASS",
@@ -413,7 +427,7 @@
       "dims": null,
       "copy": {
         "headline": "Self-Employed Taxes Made Simple Online",
-        "description": "Import 1099s and find every deduction with TurboTax Self-Employed."
+        "description": "Import 1099s and find every deduction with Northwind Tax Self-Employed."
       },
       "image_prompt": null,
       "char_check": "FAIL",
@@ -434,7 +448,7 @@
       "dims": null,
       "copy": {
         "headline": "File Free: Simple Returns",
-        "description": "Simple returns file federal & state for $0 with TurboTax Free Edition."
+        "description": "Simple returns file federal & state for $0 with Northwind Free Edition."
       },
       "image_prompt": null,
       "char_check": "PASS",
@@ -453,7 +467,7 @@
       "dims": null,
       "copy": {
         "headline": "Start Your Taxes Free",
-        "description": "Start for $0 with TurboTax Free Edition; upgrade only if your return needs it."
+        "description": "Start for $0 with Northwind Free Edition; upgrade only if your return needs it."
       },
       "image_prompt": null,
       "char_check": "PASS",

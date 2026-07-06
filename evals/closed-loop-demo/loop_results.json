@@ -1,7 +1,7 @@
 {
   "_comment": "Closed-loop demo: arms.ai PRODUCTION fields come from the creative-factory manifest lift_handoff; perf fields are illustrative pending a real flight.",
-  "experiment": "TurboTax TY25 prospecting - AI (creative-factory) vs Agency creative",
-  "primary_metric": "incremental GNS (new filers)",
+  "experiment": "Northwind Tax TY25 prospecting - AI (creative-factory) vs Agency creative",
+  "primary_metric": "incremental new customers",
   "currency": "USD",
   "revenue_per_conversion": 300,
   "design": {
