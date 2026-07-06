@@ -4,7 +4,8 @@ description: >-
   Mass-produce on-brand, spec-valid, compliance-gated ad creative variants from one campaign brief —
   the AI creative-production engine for Adobe Gen Studio / Celtra-style workflows. Expands a
   format x message-pillar x audience matrix into hundreds of variants, writes each to the exact platform
-  spec (Meta, Google, TikTok, LinkedIn, DV360 dimensions, safe zones, and character limits), runs every
+  spec (Meta, Google, TikTok, LinkedIn, DV360, X, YouTube, Pinterest, Snapchat, and 小红书 dimensions,
+  safe zones, and character limits), runs every
   one through the brand-system COMPLIANCE GATE so banned claims and missing disclaimers never ship, and
   emits a generation-manifest whose production-efficiency numbers (assets, cost-per-asset,
   brand-QA-pass-rate, time-to-launch) drop straight into experiment-designer / lift-scorecard to prove

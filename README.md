@@ -21,7 +21,8 @@ variants you still have to eyeball one-by-one hasn't saved anyone anything.
 `creative-factory` owns the mechanical half so the only thing left to judgment is the words and the image:
 
 - **Matrix** — expands `format × message-pillar × audience` into one variant per cell.
-- **Spec** — writes each to the exact platform spec (Meta / Google / TikTok / LinkedIn / DV360 dims,
+- **Spec** — writes each to the exact platform spec (Meta / Google / TikTok / LinkedIn / DV360 / X /
+  YouTube / Pinterest / Snapchat / 小红书 — 10 channels, 27 placements — dims,
   safe zones, character limits) and fails anything that would truncate or sit under platform UI.
 - **Compliance gate** — runs every variant through a brand compliance gate (banned claims, missing
   disclaimers) so the safe ones ship automatically and the unsafe ones are held back. *That* is what makes
