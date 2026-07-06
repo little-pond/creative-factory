@@ -348,11 +348,16 @@ def cmd_build(args):
 
 def write_render_prompts(manifest, outdir):
     """Emit shippable image/video variants' prompts as a ready-to-render list (the hybrid --render
-    half: feed these to generate-image / Gen Studio / Celtra to produce the real hero assets)."""
-    prompts = [{"id": r["id"], "dims": r.get("dims"), "platform": r["platform"],
-                "image_prompt": next((v.get("image_prompt") for v in manifest["variants"]
-                                      if v["id"] == r["id"]), None)}
-               for r in manifest["variants"] if r["shippable"] and r["asset_type"] in ("image", "video")]
+    half: feed these to generate-image / Gen Studio / Celtra to produce the real hero assets). Carries
+    the placement + its safe zone so render.py --layout-ref can draw a layout wireframe per item."""
+    prompts = []
+    for r in manifest["variants"]:
+        if not (r["shippable"] and r["asset_type"] in ("image", "video")):
+            continue
+        spec = fmt.spec_for(r["platform"], r.get("placement", ""))
+        prompts.append({"id": r["id"], "dims": r.get("dims"), "platform": r["platform"],
+                        "placement": r.get("placement"), "safe": spec.get("safe"),
+                        "image_prompt": r.get("image_prompt")})
     path = os.path.join(outdir, "render-queue.json")
     with open(path, "w") as f:
         json.dump(prompts, f, indent=2, ensure_ascii=False)

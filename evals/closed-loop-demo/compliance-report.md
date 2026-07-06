@@ -25,7 +25,7 @@
 
 ### Provenance (reproducibility)
 
-- Built: `2026-07-06T22:12:53+00:00`
+- Built: `2026-07-06T22:32:16+00:00`
 - Brand profile: `sha256:160ca87c7bb98d9f274c7b5fdd537dadeb86d130039b313c0b40729212a7753f`
 - Gate ruleset: `sha256:5748ad2e7831ecbd6aea86c7b5b3c98772c7e72e5b7f2d4515598092b892bc88`
 - _Same two hashes ⇒ the same rules gated this batch — record with the compliance sign-off._

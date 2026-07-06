@@ -25,7 +25,9 @@ Studio reuse a single visual across a variant matrix.
 ## What the pipeline enforces for you
 
 - **`render.py`** injects an anti-slop constraint block (`references/anti-slop-image.md`) into every
-  prompt, so the hero reads on-brand instead of generic stock.
+  prompt, so the hero reads on-brand instead of generic stock. Add `--layout-ref --copy-zone bottom` and
+  it also passes a **layout wireframe** (copy zone + focal-subject zone + safe bands, drawn from
+  `formats.py`) to the model as an `--input`, so the hero reserves clean negative space for the copy.
 - **`compose.py`** keeps the copy **out of the placement's safe zone** (`formats.py` `safe_zone_px`) and
   checks a **legibility-contrast floor** against the hero pixels under the copy, auto-strengthening the
   scrim when it fails.

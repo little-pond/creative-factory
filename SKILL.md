@@ -127,10 +127,17 @@ Pass `--brand <profile.json>` so `render.py` injects the **anti-slop constraint 
 list + the brand's palette and visual don'ts, from `references/anti-slop-image.md`) into every prompt —
 the render-side twin of the copy gate, so the hero reads on-brand instead of generic stock.
 
+Add `--layout-ref` (with `--copy-zone top|bottom|left|right`) to pass the placement's **layout as a visual
+reference**: `render.py` draws a wireframe from `formats.py` (copy zone + focal-subject zone + platform-UI
+safe bands) and feeds it to the model as an `--input`, so the hero *reserves clean negative space where the
+copy will go* instead of only being asked in prose. The hero is still layout-agnostic enough to reuse, but
+the composited copy no longer collides with the subject.
+
 ```bash
 # SAFE BY DEFAULT: no --go renders nothing — it prints the plan + estimated cost and stops.
 python3 scripts/render.py out/render-queue.json --brand ../brand-system/assets/northwind.brand.json          # estimate, $0
 python3 scripts/render.py out/render-queue.json --brand ../brand-system/assets/northwind.brand.json --go --max-cost 0.50
+python3 scripts/render.py out/render-queue.json --brand ... --layout-ref --copy-zone bottom --go   # reserve copy space
 #   --model: google/gemini-3-pro-image-preview (default, best) · google/gemini-2.5-flash-image (cheapest)
 #            google/gemini-3.1-flash-image · openai/gpt-5-image | gpt-5-image-mini | gpt-5.4-image-2
 #   ~cost/img: flash ~$0.003 · gemini-3-pro ~$0.015 · gpt-5-image ~$0.02  (approx; scales w/ resolution)
